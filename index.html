@@ -14,6 +14,7 @@
       --wrong: #FF4B4B;
       --tricky: #E74C3C;
       --yt-red: #CC0000;
+      --purple: #9B59B6;
       --bg: #F7F9FA;
       --text: #3C3C3C;
     }
@@ -22,14 +23,14 @@
     body { margin: 0; padding: 14px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
     header { text-align: center; margin-bottom: 12px; }
-    h1 { margin: 2px 0; color: #2C3E50; font-size: 24px; }
+    h1 { margin: 2px 0; color: #2C3E50; font-size: 22px; }
     .subtitle { font-size: 13px; color: #7F8C8D; margin: 0; }
 
-    /* Tabs */
-    .nav-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
+    /* Navigation Tabs */
+    .nav-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; max-width: 580px; }
     .tab-btn {
-      padding: 9px 16px; border: 2px solid var(--primary); background: white;
-      border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; color: var(--primary);
+      padding: 7px 12px; border: 2px solid var(--primary); background: white;
+      border-radius: 18px; font-size: 13px; font-weight: bold; cursor: pointer; color: var(--primary);
       box-shadow: 0 3px 0 var(--primary); transition: all 0.1s;
     }
     .tab-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--primary); }
@@ -49,22 +50,20 @@
     .phase-pill.tricky-pill.active { border-color: var(--tricky); background: #FDEDEC; color: var(--tricky); box-shadow: 0 2px 0 #C0392B; }
 
     .big-btn {
-      background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 20px;
+      background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 18px;
       font-size: 15px; font-weight: bold; cursor: pointer; color: var(--secondary-dark);
       box-shadow: 0 3px 0 var(--secondary-dark); display: inline-flex; align-items: center; gap: 6px;
       text-decoration: none;
     }
     .big-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--secondary-dark); }
 
-    /* YouTube / BBC Official Link Button */
     .video-link-btn {
-      background: #FDEDEC; border: 2px solid var(--yt-red); border-radius: 14px; padding: 10px 18px;
-      font-size: 14px; font-weight: bold; color: var(--yt-red); text-decoration: none;
-      box-shadow: 0 3px 0 var(--yt-red); display: inline-flex; align-items: center; gap: 8px; margin: 8px 0;
+      background: #FDEDEC; border: 2px solid var(--yt-red); border-radius: 14px; padding: 8px 16px;
+      font-size: 13px; font-weight: bold; color: var(--yt-red); text-decoration: none;
+      box-shadow: 0 3px 0 var(--yt-red); display: inline-flex; align-items: center; gap: 6px; margin: 8px 0;
     }
-    .video-link-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--yt-red); }
 
-    /* --- MODE 1: Sound Explorer --- */
+    /* Sound Explorer */
     .sound-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
     .sound-card {
       background: white; border: 2px solid #E5E5E5; border-radius: 14px; padding: 12px 2px;
@@ -79,66 +78,77 @@
       display: flex; flex-direction: column; align-items: center; text-align: center;
     }
     .lesson-title { font-size: 38px; font-weight: bold; color: #0284C7; margin-bottom: 2px; }
-    .mnemonic { font-size: 16px; font-weight: bold; color: #0369A1; margin: 4px 0 8px; }
+    .mnemonic { font-size: 15px; font-weight: bold; color: #0369A1; margin: 4px 0 8px; }
     .word-examples { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
     .example-chip {
       background: white; border: 2px solid #BAE3FF; padding: 6px 14px; border-radius: 14px;
-      font-size: 15px; cursor: pointer; font-weight: bold; color: #0284C7; box-shadow: 0 2px 0 #BAE3FF;
+      font-size: 14px; cursor: pointer; font-weight: bold; color: #0284C7; box-shadow: 0 2px 0 #BAE3FF;
     }
 
-    /* --- MODE 2: Phonics Builder --- */
+    /* Phonics Builder */
     .game-card { text-align: center; }
     .tracker { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #AFAFAF; margin-bottom: 6px; }
-    .image-clue { font-size: 72px; margin: 4px 0; line-height: 1.1; user-select: none; }
-    .audio-bar { display: flex; justify-content: center; gap: 10px; margin: 8px 0 14px; }
+    .image-clue { font-size: 64px; margin: 4px 0; line-height: 1.1; user-select: none; }
+    .audio-bar { display: flex; justify-content: center; gap: 10px; margin: 8px 0 12px; }
 
-    .frame-container {
-      position: relative;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 12px 0 18px;
-    }
-
+    .frame-container { position: relative; display: inline-flex; flex-direction: column; align-items: center; margin: 12px 0 16px; }
     .boxes-row { display: flex; gap: 10px; justify-content: center; }
     .box-column { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
     .target-box {
-      width: 56px; height: 60px; border: 3px dashed #CBD5E1; border-radius: 14px; display: flex;
-      align-items: center; justify-content: center; font-size: 26px; font-weight: bold; background: #F8FAFC; cursor: pointer;
+      width: 54px; height: 58px; border: 3px dashed #CBD5E1; border-radius: 14px; display: flex;
+      align-items: center; justify-content: center; font-size: 24px; font-weight: bold; background: #F8FAFC; cursor: pointer;
     }
     .target-box.filled { border: 3px solid var(--correct); background: #E8F8F5; color: var(--correct); }
     .target-box.split-filled { border: 3px solid var(--secondary); background: #FFF4E5; color: var(--secondary-dark); }
     .target-box.tricky-box.filled { border: 3px solid var(--tricky); background: #FDEDEC; color: var(--tricky); }
 
     .sound-button { width: 12px; height: 12px; border-radius: 50%; background: #E67E22; }
-    .sound-bar { width: 36px; height: 6px; border-radius: 3px; background: #2980B9; }
+    .sound-bar { width: 34px; height: 6px; border-radius: 3px; background: #2980B9; }
     .tricky-mark { width: 14px; height: 6px; border-radius: 3px; background: var(--tricky); }
 
     .split-arc {
-      position: absolute;
-      top: -12px;
-      height: 14px;
-      border: 3px solid var(--secondary);
-      border-bottom: none;
-      border-radius: 14px 14px 0 0;
-      pointer-events: none;
-      display: none;
+      position: absolute; top: -12px; height: 14px; border: 3px solid var(--secondary);
+      border-bottom: none; border-radius: 14px 14px 0 0; pointer-events: none; display: none;
     }
 
-    .tile-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 14px 0; min-height: 52px; }
+    .tile-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; min-height: 52px; }
     .sound-tile {
-      background: white; border: 2px solid #E5E5E5; border-radius: 14px; padding: 10px 18px;
-      font-size: 22px; font-weight: bold; color: var(--text); cursor: pointer; box-shadow: 0 4px 0 #E5E5E5;
-      user-select: none;
+      background: white; border: 2px solid #E5E5E5; border-radius: 14px; padding: 8px 16px;
+      font-size: 20px; font-weight: bold; color: var(--text); cursor: pointer; box-shadow: 0 4px 0 #E5E5E5; user-select: none;
     }
     .sound-tile:active { transform: translateY(2px); box-shadow: 0 2px 0 #E5E5E5; }
     .sound-tile.split-tile { border-color: var(--secondary); color: var(--secondary-dark); background: #FFF4E5; box-shadow: 0 4px 0 var(--secondary-dark); }
     .sound-tile.tricky-tile { border-color: var(--tricky); color: var(--tricky); background: #FDEDEC; box-shadow: 0 4px 0 #C0392B; }
     .sound-tile.used { opacity: 0.2; pointer-events: none; box-shadow: none; }
-    .status-msg { font-size: 15px; font-weight: bold; min-height: 24px; margin-top: 4px; }
+    .status-msg { font-size: 15px; font-weight: bold; min-height: 22px; margin-top: 4px; }
 
-    /* --- MODE 3: Mock Screening Check --- */
+    /* Option Cards & Choice Grid (For CGP Modes) */
+    .choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+    .choice-card {
+      background: white; border: 2px solid #E5E5E5; border-radius: 16px; padding: 18px 10px;
+      font-size: 22px; font-weight: bold; color: var(--text); cursor: pointer; box-shadow: 0 4px 0 #E5E5E5;
+      text-align: center; transition: all 0.1s;
+    }
+    .choice-card:active { transform: translateY(2px); box-shadow: 0 2px 0 #E5E5E5; }
+    .choice-card.pic-card { font-size: 52px; padding: 14px 10px; }
+
+    /* Sentence Box */
+    .sentence-card {
+      background: #F8FAFC; border: 2px solid #CBD5E1; border-radius: 16px; padding: 18px 14px;
+      font-size: 20px; font-weight: bold; line-height: 1.4; color: #1E293B; margin: 14px 0;
+    }
+
+    /* Detective Card */
+    .detective-box {
+      display: flex; justify-content: space-around; align-items: center; margin: 16px 0;
+      background: #FFFDF0; border: 2px solid #F6E05E; border-radius: 16px; padding: 16px;
+    }
+    .detective-item { text-align: center; }
+    .detective-word { font-size: 26px; font-weight: bold; color: #2D3748; margin-top: 4px; }
+    .detective-word span { color: var(--primary); text-decoration: underline; }
+
+    /* Mock Screening Check */
     .mock-card {
       margin: 14px auto; padding: 20px; border: 3px solid #E5E5E5; border-radius: 18px;
       background: #FFFFFF; max-width: 400px; text-align: center;
@@ -148,9 +158,7 @@
     .real-badge { background: #E8F8F5; color: #27AE60; }
     .mock-big-word { font-size: 52px; font-weight: bold; letter-spacing: 2px; color: #2C3E50; margin: 8px 0; }
     .mock-actions { display: flex; justify-content: center; gap: 12px; margin-top: 14px; }
-    .btn-judge {
-      padding: 10px 20px; border-radius: 12px; border: none; font-size: 15px; font-weight: bold; cursor: pointer; color: white;
-    }
+    .btn-judge { padding: 10px 20px; border-radius: 12px; border: none; font-size: 15px; font-weight: bold; cursor: pointer; color: white; }
     .btn-correct { background: var(--correct); box-shadow: 0 3px 0 #46A302; }
     .btn-wrong { background: var(--wrong); box-shadow: 0 3px 0 #D32F2F; }
   </style>
@@ -159,13 +167,16 @@
 
   <header>
     <h1>🇬🇧 Year 1 Phonics Academy</h1>
-    <p class="subtitle">UK Letters & Sounds • Official Video Links • Screening Check</p>
+    <p class="subtitle">Curriculum Practice • CGP Style Workouts • Screening Check</p>
   </header>
 
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('explorer')">📖 Sound Explorer</button>
-    <button class="tab-btn" onclick="switchTab('builder')">🧩 Phonics Builder</button>
-    <button class="tab-btn" onclick="switchTab('mock')">👾 Screening Mock (40 Words)</button>
+    <button class="tab-btn active" onclick="switchTab('explorer')">📖 Explorer</button>
+    <button class="tab-btn" onclick="switchTab('builder')">🧩 Builder</button>
+    <button class="tab-btn" onclick="switchTab('picmatch')">🖼️ Pic Match</button>
+    <button class="tab-btn" onclick="switchTab('detective')">🕵️ Sound Detective</button>
+    <button class="tab-btn" onclick="switchTab('sentence')">📖 Sentence</button>
+    <button class="tab-btn" onclick="switchTab('mock')">👾 Mock 40</button>
   </div>
 
   <div class="container">
@@ -186,12 +197,11 @@
         <div class="lesson-title" id="lessonPhoneme">ch</div>
         <div class="mnemonic" id="lessonMnemonic">"The train goes ch-ch-ch"</div>
         
-        <!-- Direct Official Video Link -->
         <a id="lessonLink" class="video-link-btn" href="#" target="_blank">
           ▶️ Watch 'ch' Pure Sound on BBC / YouTube ↗
         </a>
 
-        <div style="margin-top: 10px; font-size: 13px; color: #666;">Example words (Tap to hear the full word):</div>
+        <div style="margin-top: 10px; font-size: 13px; color: #666;">Example words (Tap to hear):</div>
         <div class="word-examples" id="lessonExamples"></div>
       </div>
     </div>
@@ -232,7 +242,67 @@
       </div>
     </div>
 
-    <!-- 3. MOCK SCREENING CHECK -->
+    <!-- 3. PICTURE MATCH (CGP Style Q1) -->
+    <div id="panel-picmatch" class="panel">
+      <div class="game-card">
+        <div class="tracker">
+          <span>Look at the picture. Circle the correct word:</span>
+          <span id="picCounter">1 / 10</span>
+        </div>
+        <div id="picClue" class="image-clue" style="font-size: 80px;">🏑</div>
+        <div class="choice-grid" id="picChoices"></div>
+        <div id="picStatus" class="status-msg"></div>
+        <button class="big-btn" style="margin-top: 10px; background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="nextPicQuestion()">Next ➡️</button>
+      </div>
+    </div>
+
+    <!-- 4. SOUND DETECTIVE (CGP Style Q2) -->
+    <div id="panel-detective" class="panel">
+      <div class="game-card">
+        <div class="tracker">
+          <span>Alternative Sound Detective:</span>
+          <span id="detectiveCounter">1 / 8</span>
+        </div>
+        <p style="font-size: 14px; color: #555; margin: 8px 0;">Do the highlighted letters make the <b>SAME</b> sound in each word?</p>
+        
+        <div class="detective-box">
+          <div class="detective-item">
+            <div id="detEmoji1" style="font-size: 40px;">🛋️</div>
+            <div id="detWord1" class="detective-word">pill<span>ow</span></div>
+          </div>
+          <div style="font-size: 24px; font-weight: bold; color: #CBD5E1;">VS</div>
+          <div class="detective-item">
+            <div id="detEmoji2" style="font-size: 40px;">🐄</div>
+            <div id="detWord2" class="detective-word">c<span>ow</span></div>
+          </div>
+        </div>
+
+        <button class="big-btn" style="margin-bottom: 10px;" onclick="speakDetectiveWords()">🔊 Hear Both Words</button>
+
+        <div class="choice-grid" style="grid-template-columns: 1fr 1fr; max-width: 300px; margin: 0 auto;">
+          <button class="choice-card" onclick="answerDetective(true)">✅ Yes, Same</button>
+          <button class="choice-card" onclick="answerDetective(false)">❌ No, Different</button>
+        </div>
+        <div id="detStatus" class="status-msg" style="margin-top: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- 5. SENTENCE MATCH (CGP Style Q5) -->
+    <div id="panel-sentence" class="panel">
+      <div class="game-card">
+        <div class="tracker">
+          <span>Read the sentence. Circle the best picture:</span>
+          <span id="sentenceCounter">1 / 8</span>
+        </div>
+        <div id="sentenceText" class="sentence-card">"When I came back again, the seeds had grown into flowers."</div>
+        <button class="big-btn" style="margin-bottom: 12px;" onclick="readCurrentSentence()">🔊 Read Sentence</button>
+        <div class="choice-grid" id="sentenceChoices"></div>
+        <div id="sentenceStatus" class="status-msg"></div>
+        <button class="big-btn" style="margin-top: 10px; background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="nextSentenceQuestion()">Next ➡️</button>
+      </div>
+    </div>
+
+    <!-- 6. MOCK SCREENING CHECK -->
     <div id="panel-mock" class="panel">
       <div style="text-align: center;">
         <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #888; margin-bottom: 8px;">
@@ -262,7 +332,7 @@
   </div>
 
   <script>
-    /* ----------------- CLEAN FULL-WORD SPEECH SYNTHESIS ----------------- */
+    /* ----------------- SPEECH SYNTHESIS ENGINE ----------------- */
     function speakFullWord(word) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
@@ -461,6 +531,42 @@
       'cew': shuffleArray(RAW_BUILD_LIBRARY['cew'])
     };
 
+    /* --- CGP Workouts Data --- */
+    const PIC_MATCH_DATA = [
+      { emoji: "🏑", correct: "hockey", options: ["hockey", "jockey"] },
+      { emoji: "🏇", correct: "jockey", options: ["hockey", "jockey"] },
+      { emoji: "🐒", correct: "monkey", options: ["monkey", "donkey"] },
+      { emoji: "🫏", correct: "donkey", options: ["monkey", "donkey"] },
+      { emoji: "🧣", correct: "towel", options: ["throw", "towel"] },
+      { emoji: "🥏", correct: "throw", options: ["throw", "towel"] },
+      { emoji: "🪙", correct: "coin", options: ["coin", "corn"] },
+      { emoji: "🌽", correct: "corn", options: ["coin", "corn"] },
+      { emoji: "🐌", correct: "snail", options: ["snail", "sail"] },
+      { emoji: "⛵", correct: "sail", options: ["snail", "sail"] }
+    ];
+
+    const DETECTIVE_DATA = [
+      { w1: "pillow", h1: "ow", e1: "🛋️", w2: "cow", h2: "ow", e2: "🐄", same: false },
+      { w1: "meat", h1: "ea", e1: "🥩", w2: "bread", h2: "ea", e2: "🍞", same: false },
+      { w1: "cloud", h1: "ou", e1: "☁️", w2: "soup", h2: "ou", e2: "🥣", same: false },
+      { w1: "rain", h1: "ai", e1: "🌧️", w2: "snail", h2: "ai", e2: "🐌", same: true },
+      { w1: "night", h1: "igh", e1: "🌃", w2: "light", h2: "igh", e2: "💡", same: true },
+      { w1: "book", h1: "oo", e1: "📖", w2: "moon", h2: "oo", e2: "🌙", same: false },
+      { w1: "fork", h1: "or", e1: "🍴", w2: "horn", h2: "or", e2: "📯", same: true },
+      { w1: "girl", h1: "ir", e1: "👧", w2: "bird", h2: "ir", e2: "🐦", same: true }
+    ];
+
+    const SENTENCE_DATA = [
+      { text: "When I came back again, the seeds had grown into flowers.", correct: "🌸", options: ["🌱", "🌸"] },
+      { text: "The green frog can jump onto the wooden log.", correct: "🐸", options: ["🦆", "🐸"] },
+      { text: "Look up! A bright star is shining in the dark night sky.", correct: "⭐", options: ["⭐", "🌧️"] },
+      { text: "Put on your warm brown coat before you play in the park.", correct: "🧥", options: ["🩳", "🧥"] },
+      { text: "The pirate found a big chest full of gold coins.", correct: "🪙", options: ["🪙", "🐟"] },
+      { text: "We sat by the camp tent and looked at the moon.", correct: "⛺", options: ["⛺", "🚗"] },
+      { text: "A little bird with blue wings is singing in the tree.", correct: "🐦", options: ["🐦", "🐌"] },
+      { text: "I can bake a sweet cake with lots of red cherries.", correct: "🎂", options: ["🎂", "🥪"] }
+    ];
+
     const MOCK_WORDS = [
       { word: "vap", isAlien: true, emoji: "👾" },
       { word: "strop", isAlien: true, emoji: "👽" },
@@ -506,8 +612,9 @@
 
     /* ----------------- TAB SWITCHER ----------------- */
     function switchTab(tabId) {
+      const tabs = ['explorer', 'builder', 'picmatch', 'detective', 'sentence', 'mock'];
       document.querySelectorAll('.tab-btn').forEach((b, i) => {
-        b.classList.toggle('active', ['explorer', 'builder', 'mock'][i] === tabId);
+        b.classList.toggle('active', tabs[i] === tabId);
       });
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById(`panel-${tabId}`).classList.add('active');
@@ -550,7 +657,6 @@
       document.getElementById('lessonPhoneme').innerText = item.p;
       document.getElementById('lessonMnemonic').innerText = `"${item.m}"`;
 
-      // Generate direct, fail-safe search link for BBC / Official YouTube phonics guides
       const linkBtn = document.getElementById('lessonLink');
       const searchQuery = encodeURIComponent(`BBC Bitesize Phonics ${item.p} sound`);
       linkBtn.href = `https://www.youtube.com/results?search_query=${searchQuery}`;
@@ -618,13 +724,12 @@
         frame.appendChild(wrap);
       });
 
-      // Split Digraph Rainbow Bridge
       const arc = document.getElementById('splitArc');
       if (data.splitMap) {
         arc.style.display = 'block';
         const [sStart, sEnd] = data.splitMap.slots;
-        const boxWidth = 56 + 10;
-        const leftOffset = sStart * boxWidth + 28;
+        const boxWidth = 54 + 10;
+        const leftOffset = sStart * boxWidth + 27;
         const width = (sEnd - sStart) * boxWidth;
         arc.style.left = `${leftOffset}px`;
         arc.style.width = `${width}px`;
@@ -632,7 +737,6 @@
         arc.style.display = 'none';
       }
 
-      // Generate Options Bank
       const distractors = isCEW 
         ? ['a', 'e', 'i', 'o', 'u', 's', 't'] 
         : ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai', 'k', 'n'];
@@ -758,7 +862,114 @@
       speakFullWord(BUILD_LIBRARY[currentBuildPhase][buildIndex].word);
     }
 
-    /* ----------------- MODE 3: MOCK SCREENING CHECK ----------------- */
+    /* ----------------- MODE 3: PICTURE MATCH (CGP Q1) ----------------- */
+    let picIndex = 0;
+    function renderPicMatch() {
+      const item = PIC_MATCH_DATA[picIndex];
+      document.getElementById('picCounter').innerText = `${picIndex + 1} / ${PIC_MATCH_DATA.length}`;
+      document.getElementById('picClue').innerText = item.emoji;
+      document.getElementById('picStatus').innerText = "";
+
+      const choiceWrap = document.getElementById('picChoices');
+      choiceWrap.innerHTML = '';
+      item.options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'choice-card';
+        btn.innerText = opt;
+        btn.onclick = () => {
+          speakFullWord(opt);
+          if (opt === item.correct) {
+            document.getElementById('picStatus').style.color = 'var(--correct)';
+            document.getElementById('picStatus').innerText = "Well done! That's correct.";
+            setTimeout(() => nextPicQuestion(), 1300);
+          } else {
+            document.getElementById('picStatus').style.color = 'var(--wrong)';
+            document.getElementById('picStatus').innerText = "Try again!";
+          }
+        };
+        choiceWrap.appendChild(btn);
+      });
+    }
+
+    function nextPicQuestion() {
+      picIndex = (picIndex + 1) % PIC_MATCH_DATA.length;
+      renderPicMatch();
+    }
+
+    /* ----------------- MODE 4: SOUND DETECTIVE (CGP Q2) ----------------- */
+    let detIndex = 0;
+    function renderDetective() {
+      const item = DETECTIVE_DATA[detIndex];
+      document.getElementById('detectiveCounter').innerText = `${detIndex + 1} / ${DETECTIVE_DATA.length}`;
+      document.getElementById('detEmoji1').innerText = item.e1;
+      document.getElementById('detEmoji2').innerText = item.e2;
+      document.getElementById('detStatus').innerText = "";
+
+      const formatWord = (w, h) => w.replace(h, `<span>${h}</span>`);
+      document.getElementById('detWord1').innerHTML = formatWord(item.w1, item.h1);
+      document.getElementById('detWord2').innerHTML = formatWord(item.w2, item.h2);
+    }
+
+    function speakDetectiveWords() {
+      const item = DETECTIVE_DATA[detIndex];
+      speakFullWord(item.w1);
+      setTimeout(() => speakFullWord(item.w2), 900);
+    }
+
+    function answerDetective(childAnswer) {
+      const item = DETECTIVE_DATA[detIndex];
+      const status = document.getElementById('detStatus');
+      if (childAnswer === item.same) {
+        status.style.color = 'var(--correct)';
+        status.innerText = "Brilliant Detective Work! Correct.";
+        setTimeout(() => {
+          detIndex = (detIndex + 1) % DETECTIVE_DATA.length;
+          renderDetective();
+        }, 1400);
+      } else {
+        status.style.color = 'var(--wrong)';
+        status.innerText = "Listen closely! Tap 'Hear Both Words' to check.";
+      }
+    }
+
+    /* ----------------- MODE 5: SENTENCE MATCH (CGP Q5) ----------------- */
+    let sentenceIndex = 0;
+    function renderSentence() {
+      const item = SENTENCE_DATA[sentenceIndex];
+      document.getElementById('sentenceCounter').innerText = `${sentenceIndex + 1} / ${SENTENCE_DATA.length}`;
+      document.getElementById('sentenceText').innerText = `"${item.text}"`;
+      document.getElementById('sentenceStatus').innerText = "";
+
+      const choiceWrap = document.getElementById('sentenceChoices');
+      choiceWrap.innerHTML = '';
+      item.options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'choice-card pic-card';
+        btn.innerText = opt;
+        btn.onclick = () => {
+          if (opt === item.correct) {
+            document.getElementById('sentenceStatus').style.color = 'var(--correct)';
+            document.getElementById('sentenceStatus').innerText = "Super Reading Comprehension! Correct.";
+            setTimeout(() => nextSentenceQuestion(), 1400);
+          } else {
+            document.getElementById('sentenceStatus').style.color = 'var(--wrong)';
+            document.getElementById('sentenceStatus').innerText = "Read the sentence again carefully!";
+          }
+        };
+        choiceWrap.appendChild(btn);
+      });
+    }
+
+    function readCurrentSentence() {
+      speakFullWord(SENTENCE_DATA[sentenceIndex].text);
+    }
+
+    function nextSentenceQuestion() {
+      sentenceIndex = (sentenceIndex + 1) % SENTENCE_DATA.length;
+      renderSentence();
+    }
+
+    /* ----------------- MODE 6: MOCK SCREENING CHECK ----------------- */
     let mockIndex = 0;
     let mockScore = 0;
 
@@ -801,6 +1012,9 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderSoundExplorer();
       renderBuilder();
+      renderPicMatch();
+      renderDetective();
+      renderSentence();
       renderMock();
     });
   </script>
