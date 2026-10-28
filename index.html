@@ -244,4 +244,285 @@
       { word: "drap", isAlien: true, emoji: "👽" },
       { word: "grost", isAlien: true, emoji: "🛸" },
       { word: "tent", isAlien: false, emoji: "⛺" },
-      { word: "swim", isAlien:
+      { word: "swim", isAlien: false, emoji: "🏊" },
+      { word: "spoon", isAlien: false, emoji: "🥄" },
+      { word: "gran", isAlien: false, emoji: "👵" },
+      { word: "chay", isAlien: true, emoji: "👾" },
+      { word: "koob", isAlien: true, emoji: "👽" },
+
+      // Section 2 (Phase 5 & Complex: 8 Alien, 12 Real)
+      { word: "voot", isAlien: true, emoji: "👹" },
+      { word: "yune", isAlien: true, emoji: "🛸" },
+      { word: "phope", isAlien: true, emoji: "👾" },
+      { word: "blain", isAlien: true, emoji: "👽" },
+      { word: "day", isAlien: false, emoji: "☀️" },
+      { word: "shout", isAlien: false, emoji: "📢" },
+      { word: "stone", isAlien: false, emoji: "🪨" },
+      { word: "girl", isAlien: false, emoji: "👧" },
+      { word: "spraw", isAlien: true, emoji: "👹" },
+      { word: "chite", isAlien: true, emoji: "👾" },
+      { word: "gleap", isAlien: true, emoji: "👽" },
+      { word: "trape", isAlien: true, emoji: "🛸" },
+      { word: "slide", isAlien: false, emoji: "🛝" },
+      { word: "white", isAlien: false, emoji: "⚪" },
+      { word: "cube", isAlien: false, emoji: "🧊" },
+      { word: "claw", isAlien: false, emoji: "🦞" },
+      { word: "screw", isAlien: false, emoji: "🔩" },
+      { word: "launch", isAlien: false, emoji: "🚀" },
+      { word: "phone", isAlien: false, emoji: "📱" },
+      { word: "whale", isAlien: false, emoji: "🐋" }
+    ];
+
+    /* ----------------- AUDIO SYSTEM (British Voice) ----------------- */
+    let ukVoice = null;
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      ukVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en_GB') ||
+                voices.find(v => v.lang.startsWith('en')) || null;
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function speak(text, rate = 0.8) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      if (ukVoice) utter.voice = ukVoice;
+      utter.lang = 'en-GB';
+      utter.rate = rate;
+      utter.pitch = 1.05;
+      window.speechSynthesis.speak(utter);
+    }
+
+    /* ----------------- TAB SWITCHER ----------------- */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', ['explorer', 'builder', 'mock'][i] === tabId);
+      });
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`panel-${tabId}`).classList.add('active');
+    }
+
+    /* ----------------- MODE 1: SOUND EXPLORER ----------------- */
+    let currentSoundIndex = 0;
+
+    function renderSoundExplorer() {
+      const grid = document.getElementById('soundGrid');
+      grid.innerHTML = '';
+      SOUND_LIBRARY.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = `sound-card ${idx === currentSoundIndex ? 'active-sound' : ''}`;
+        card.innerText = item.p.replace('_', '-');
+        card.onclick = () => selectSound(idx);
+        grid.appendChild(card);
+      });
+      showLesson(currentSoundIndex);
+    }
+
+    function selectSound(idx) {
+      currentSoundIndex = idx;
+      renderSoundExplorer();
+      playCurrentPhonemeSound();
+    }
+
+    function showLesson(idx) {
+      const item = SOUND_LIBRARY[idx];
+      document.getElementById('lessonPhoneme').innerText = item.p.replace('_', '-');
+      document.getElementById('lessonMnemonic').innerText = item.m;
+
+      const exWrap = document.getElementById('lessonExamples');
+      exWrap.innerHTML = '';
+      item.ex.forEach(word => {
+        const chip = document.createElement('div');
+        chip.className = 'example-chip';
+        chip.innerText = word;
+        chip.onclick = () => speak(word);
+        exWrap.appendChild(chip);
+      });
+    }
+
+    function playCurrentPhonemeSound() {
+      const p = SOUND_LIBRARY[currentSoundIndex].p.replace('_', ' ');
+      speak(p, 0.75);
+    }
+
+    /* ----------------- MODE 2: BUILDER (SPELLING) ----------------- */
+    let buildIndex = 0;
+    let buildSlots = [];
+
+    function renderBuilder() {
+      const data = BUILD_WORDS[buildIndex];
+      document.getElementById('buildPhaseTag').innerText = data.isTricky ? "🔴 Tricky Word" : `Phase ${data.phase}`;
+      document.getElementById('buildCounterTag').innerText = `${buildIndex + 1} / ${BUILD_WORDS.length}`;
+      document.getElementById('buildImage').innerText = data.emoji;
+      document.getElementById('buildStatus').innerText = "";
+
+      const frame = document.getElementById('buildFrame');
+      frame.innerHTML = '';
+      buildSlots = new Array(data.phonemes.length).fill(null);
+
+      data.phonemes.forEach((p, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'box-wrap';
+
+        const box = document.createElement('div');
+        box.className = `target-box ${data.isTricky ? 'tricky-box' : ''}`;
+        box.id = `bslot-${idx}`;
+        box.onclick = () => removeBuildTile(idx);
+
+        const btn = document.createElement('div');
+        btn.className = (p.length > 1 && !p.includes('_')) ? 'sound-bar' : 'sound-button';
+
+        wrap.appendChild(box);
+        wrap.appendChild(btn);
+        frame.appendChild(wrap);
+      });
+
+      // Distractors & Bank
+      const distractors = ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai', 'l'];
+      const tiles = [...data.phonemes];
+      while (tiles.length < data.phonemes.length + 3) {
+        const rand = distractors[Math.floor(Math.random() * distractors.length)];
+        if (!tiles.includes(rand)) tiles.push(rand);
+      }
+      tiles.sort(() => Math.random() - 0.5);
+
+      const bank = document.getElementById('buildBank');
+      bank.innerHTML = '';
+      tiles.forEach(t => {
+        const tile = document.createElement('div');
+        tile.className = 'sound-tile';
+        tile.innerText = t.replace('_', '-');
+        tile.onclick = () => pickBuildTile(t, tile);
+        bank.appendChild(tile);
+      });
+    }
+
+    function pickBuildTile(ph, elem) {
+      const empty = buildSlots.findIndex(s => s === null);
+      if (empty === -1) return;
+
+      buildSlots[empty] = { ph, elem };
+      elem.classList.add('used');
+
+      const box = document.getElementById(`bslot-${empty}`);
+      box.innerText = ph.replace('_', '-');
+      box.classList.add('filled');
+
+      speak(ph.replace('_', ' '), 0.75);
+      checkBuildAnswer();
+    }
+
+    function removeBuildTile(idx) {
+      if (!buildSlots[idx]) return;
+      buildSlots[idx].elem.classList.remove('used');
+      buildSlots[idx] = null;
+
+      const box = document.getElementById(`bslot-${idx}`);
+      box.innerText = '';
+      box.classList.remove('filled');
+      document.getElementById('buildStatus').innerText = "";
+    }
+
+    function checkBuildAnswer() {
+      if (buildSlots.includes(null)) return;
+      const data = BUILD_WORDS[buildIndex];
+      const isCorrect = buildSlots.every((s, i) => s.ph === data.phonemes[i]);
+      const status = document.getElementById('buildStatus');
+
+      if (isCorrect) {
+        status.style.color = '#27AE60';
+        status.innerText = "🌟 Well done! Correct!";
+        speak(data.word);
+        setTimeout(() => nextBuildWord(), 1500);
+      } else {
+        status.style.color = '#E74C3C';
+        status.innerText = "Try again! 點擊方格退回字母。";
+      }
+    }
+
+    function nextBuildWord() {
+      buildIndex = (buildIndex + 1) % BUILD_WORDS.length;
+      renderBuilder();
+    }
+
+    function prevBuildWord() {
+      if (buildIndex > 0) {
+        buildIndex--;
+        renderBuilder();
+      }
+    }
+
+    function sayBuildWord() {
+      speak(BUILD_WORDS[buildIndex].word);
+    }
+
+    function soundOutBuildWord() {
+      const data = BUILD_WORDS[buildIndex];
+      let delay = 0;
+      data.phonemes.forEach((p, idx) => {
+        setTimeout(() => {
+          const box = document.getElementById(`bslot-${idx}`);
+          if (box) {
+            box.style.transform = "scale(1.15)";
+            setTimeout(() => box.style.transform = "scale(1)", 250);
+          }
+          speak(p.replace('_', ' '), 0.75);
+        }, delay);
+        delay += 600;
+      });
+    }
+
+    /* ----------------- MODE 3: MOCK SCREENING CHECK ----------------- */
+    let mockIndex = 0;
+    let mockScore = 0;
+
+    function renderMock() {
+      const item = MOCK_WORDS[mockIndex];
+      document.getElementById('mockCounter').innerText = `${mockIndex + 1} / ${MOCK_WORDS.length}`;
+      document.getElementById('mockBigWord').innerText = item.word;
+      document.getElementById('mockEmoji').innerText = item.emoji;
+
+      const badge = document.getElementById('mockBadge');
+      if (item.isAlien) {
+        badge.className = "alien-badge";
+        badge.innerText = "👾 外星人假字 (Alien Word)";
+      } else {
+        badge.className = "real-badge";
+        badge.innerText = "📘 真實字 (Real Word)";
+      }
+    }
+
+    function speakCurrentMockWord() {
+      speak(MOCK_WORDS[mockIndex].word, 0.75);
+    }
+
+    function judgeMock(isCorrect) {
+      if (isCorrect) mockScore++;
+      document.getElementById('mockScore').innerText = mockScore;
+
+      if (mockIndex < MOCK_WORDS.length - 1) {
+        mockIndex++;
+        renderMock();
+      } else {
+        const pass = mockScore >= 32;
+        alert(`評估完成！\n總分：${mockScore} / 40\n結果：${pass ? "🎉 恭喜達到官方合格線 (Pass)！" : "💪 繼續加油，多練習弱項音素！"}`);
+        mockIndex = 0;
+        mockScore = 0;
+        document.getElementById('mockScore').innerText = "0";
+        renderMock();
+      }
+    }
+
+    /* ----------------- INITIALISATION ----------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSoundExplorer();
+      renderBuilder();
+      renderMock();
+    });
+  </script>
+</body>
+</html>
