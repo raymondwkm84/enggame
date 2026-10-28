@@ -1,1 +1,247 @@
-Hello world!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UK Year 1 Phonics Home Academy</title>
+  <style>
+    :root {
+      --primary: #4A90E2;
+      --secondary: #F39C12;
+      --accent: #2ECC71;
+      --danger: #E74C3C;
+      --card-bg: #FFFFFF;
+      --bg: #F4F8FB;
+      --text: #2C3E50;
+    }
+
+    * { box-sizing: border-box; font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif; }
+    body { margin: 0; padding: 16px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+    header { text-align: center; margin-bottom: 16px; }
+    h1 { margin: 4px 0; color: #2C3E50; font-size: 26px; }
+    .subtitle { font-size: 14px; color: #7F8C8D; margin: 0; }
+
+    /* Top Nav Tabs */
+    .nav-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
+    .tab-btn {
+      padding: 10px 18px; border: 2px solid var(--primary); background: white;
+      border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; color: var(--primary);
+      transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .tab-btn.active { background: var(--primary); color: white; }
+
+    .container { width: 100%; max-width: 600px; }
+    .panel { display: none; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .panel.active { display: block; }
+
+    /* --- MODE 1: Sound Explorer --- */
+    .sound-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 10px; margin-top: 14px; }
+    .sound-card {
+      background: #EBF5FB; border: 2px solid #3498DB; border-radius: 12px; padding: 12px 6px;
+      text-align: center; font-size: 20px; font-weight: bold; color: #2980B9; cursor: pointer;
+      box-shadow: 0 3px 0 #2980B9;
+    }
+    .sound-card:hover { transform: translateY(-2px); }
+    .sound-card.active-sound { background: var(--secondary); color: white; border-color: #D35400; box-shadow: 0 3px 0 #D35400; }
+
+    .lesson-box {
+      margin-top: 20px; padding: 16px; border-radius: 14px; background: #FFF9E6; border: 2px solid #F1C40F;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .mnemonic { font-size: 18px; font-weight: bold; color: #D35400; margin: 8px 0; }
+    .word-examples { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+    .example-chip {
+      background: white; border: 1px solid #F39C12; padding: 6px 12px; border-radius: 16px;
+      font-size: 15px; cursor: pointer; font-weight: bold; color: #E67E22;
+    }
+
+    /* --- MODE 2: Builder & Spelling --- */
+    .game-card { text-align: center; }
+    .tracker { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #95A5A6; margin-bottom: 12px; }
+    .image-clue { font-size: 70px; margin: 4px 0; line-height: 1.1; user-select: none; }
+    
+    .audio-bar { display: flex; justify-content: center; gap: 10px; margin: 12px 0 16px; }
+    .btn-audio {
+      background: #FFF4D9; border: 2px solid #F39C12; border-radius: 12px; padding: 8px 16px;
+      font-size: 14px; font-weight: bold; cursor: pointer; color: #D35400; display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    .phoneme-frame { display: flex; justify-content: center; gap: 8px; margin: 12px 0 18px; flex-wrap: wrap; }
+    .box-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .target-box {
+      width: 54px; height: 58px; border: 3px dashed #CBD5E1; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-size: 22px; font-weight: bold; background: #F8FAFC; cursor: pointer;
+    }
+    .target-box.filled { border: 3px solid var(--accent); background: #E8F8F5; color: #27AE60; }
+    .target-box.tricky-box.filled { border: 3px solid var(--danger); background: #FDEDEC; color: var(--danger); }
+    .sound-button { width: 12px; height: 12px; border-radius: 50%; background: #E67E22; }
+    .sound-bar { width: 32px; height: 6px; border-radius: 3px; background: #2980B9; }
+
+    .tile-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 16px 0; min-height: 50px; }
+    .sound-tile {
+      background: #EBF5FB; border: 2px solid #3498DB; border-radius: 10px; padding: 8px 14px;
+      font-size: 20px; font-weight: bold; color: #2980B9; cursor: pointer; box-shadow: 0 4px 0 #2980B9;
+    }
+    .sound-tile.used { opacity: 0.25; pointer-events: none; box-shadow: none; }
+    .status-msg { font-size: 16px; font-weight: bold; min-height: 24px; margin-top: 6px; }
+
+    /* --- MODE 3: Mock Screening Check --- */
+    .mock-container { text-align: center; }
+    .alien-badge { display: inline-flex; align-items: center; gap: 6px; background: #FDEDEC; color: #C0392B; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; }
+    .real-badge { display: inline-flex; align-items: center; gap: 6px; background: #E8F8F5; color: #27AE60; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; }
+    .mock-word-card {
+      margin: 20px auto; padding: 24px; border: 3px solid #BDC3C7; border-radius: 18px;
+      background: #FDFEFE; max-width: 380px; position: relative;
+    }
+    .mock-big-word { font-size: 48px; font-weight: bold; letter-spacing: 2px; color: #2C3E50; margin: 12px 0; }
+    .mock-actions { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+    .btn-judge {
+      padding: 12px 20px; border-radius: 14px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; color: white;
+    }
+    .btn-correct { background: var(--accent); }
+    .btn-wrong { background: var(--danger); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🇬🇧 Year 1 Phonics Academy</h1>
+    <p class="subtitle">Letters & Sounds • Pure Sounds • Screening Check</p>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('explorer')">📖 1. 認音口訣 (Sounds)</button>
+    <button class="tab-btn" onclick="switchTab('builder')">🧩 2. 拼字練習 (Builder)</button>
+    <button class="tab-btn" onclick="switchTab('mock')">👾 3. 模擬考試 (Mock Check)</button>
+  </div>
+
+  <div class="container">
+    
+    <!-- 1. SOUND EXPLORER PANEL -->
+    <div id="panel-explorer" class="panel active">
+      <div style="font-size: 13px; color: #7F8C8D;">點選任何音素，聆聽乾淨發音（Pure Sound）及課堂口訣：</div>
+      <div class="sound-grid" id="soundGrid"></div>
+
+      <div class="lesson-box" id="lessonBox">
+        <div style="font-size: 40px; font-weight: bold; color: #2C3E50;" id="lessonPhoneme">ay</div>
+        <div class="mnemonic" id="lessonMnemonic">"May I play?"</div>
+        <button class="btn-audio" onclick="playCurrentPhonemeSound()">🔊 聽正確發音 (Pure Sound)</button>
+        <div style="margin-top: 14px; font-size: 13px; color: #7F8C8D;">單詞例子（點擊可聽）：</div>
+        <div class="word-examples" id="lessonExamples"></div>
+      </div>
+    </div>
+
+    <!-- 2. PHONICS BUILDER PANEL -->
+    <div id="panel-builder" class="panel">
+      <div class="game-card">
+        <div class="tracker">
+          <span id="buildPhaseTag">Phase 3</span>
+          <span id="buildCounterTag">1 / 15</span>
+        </div>
+
+        <div id="buildImage" class="image-clue">🐟</div>
+
+        <div class="audio-bar">
+          <button class="btn-audio" onclick="sayBuildWord()">🔊 讀全字</button>
+          <button class="btn-audio" onclick="soundOutBuildWord()">🔤 拆音 (Sound Out)</button>
+        </div>
+
+        <div class="phoneme-frame" id="buildFrame"></div>
+        <div class="tile-bank" id="buildBank"></div>
+        <div id="buildStatus" class="status-msg"></div>
+
+        <div style="margin-top: 14px; display: flex; justify-content: center; gap: 10px;">
+          <button class="btn-audio" style="background:#ECEFF1; border-color:#B0BEC5; color:#546E7A;" onclick="prevBuildWord()">⬅️ 上一個</button>
+          <button class="btn-audio" style="background:#ECEFF1; border-color:#B0BEC5; color:#546E7A;" onclick="nextBuildWord()">跳過 / 下一個 ➡️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MOCK SCREENING CHECK PANEL -->
+    <div id="panel-mock" class="panel">
+      <div class="mock-container">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #7F8C8D; margin-bottom: 10px;">
+          <span>英國官方模式 (Phonics Screening Check)</span>
+          <span id="mockCounter">1 / 40</span>
+        </div>
+
+        <div class="mock-word-card">
+          <div id="mockBadge" class="alien-badge">👾 外星人假字 (Alien Word)</div>
+          <div id="mockBigWord" class="mock-big-word">vap</div>
+          <div id="mockEmoji" style="font-size: 40px; margin: 4px 0;">👽</div>
+          <button class="btn-audio" onclick="speakCurrentMockWord()">🔊 聽考官示範音</button>
+        </div>
+
+        <div style="font-size: 14px; color: #546E7A; margin: 10px 0;">家長陪同評分（小朋友自己大聲讀出）：</div>
+        <div class="mock-actions">
+          <button class="btn-judge btn-correct" onclick="judgeMock(true)">✅ 讀得好 (Correct)</button>
+          <button class="btn-judge btn-wrong" onclick="judgeMock(false)">❌ 讀錯咗 (Incorrect)</button>
+        </div>
+
+        <div style="margin-top: 14px; font-size: 14px; font-weight: bold; color: #2C3E50;">
+          目前得分：<span id="mockScore" style="color: #27AE60;">0</span> / 40 （合格線：32分）
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ----------------- DATA DEFINITIONS ----------------- */
+    const SOUND_LIBRARY = [
+      { p: "sh", m: "Says 'sh' to the noisy children", ex: ["fish", "ship", "shop"] },
+      { p: "ch", m: "The train goes 'ch-ch-ch'", ex: ["chip", "chin", "chop"] },
+      { p: "th", m: "Princess and the horse (th)", ex: ["moth", "thin", "thick"] },
+      { p: "ee", m: "What can you see?", ex: ["feet", "tree", "see"] },
+      { p: "igh", m: "Fly high in the sky", ex: ["night", "light", "high"] },
+      { p: "oa", m: "Goat in a boat", ex: ["boat", "coat", "soap"] },
+      { p: "oo", m: "Look at a book / Zoo", ex: ["moon", "book", "spoon"] },
+      { p: "ar", m: "Start the car", ex: ["car", "star", "park"] },
+      { p: "or", m: "Shut the door", ex: ["fork", "horn", "corn"] },
+      { p: "ay", m: "May I play?", ex: ["day", "play", "tray"] },
+      { p: "ou", m: "Shout it out!", ex: ["cloud", "shout", "mouth"] },
+      { p: "ea", m: "Cup of tea", ex: ["meat", "leaf", "tea"] },
+      { p: "ir", m: "Whirl and twirl", ex: ["bird", "girl", "first"] },
+      { p: "a_e", m: "Make a cake (Magic e)", ex: ["cake", "snake", "grape"] },
+      { p: "i_e", m: "Nice smile (Magic e)", ex: ["kite", "bike", "time"] },
+      { p: "o_e", m: "Phone home (Magic e)", ex: ["bone", "home", "rope"] }
+    ];
+
+    const BUILD_WORDS = [
+      { word: "fish", phonemes: ["f", "i", "sh"], emoji: "🐟", phase: 3 },
+      { word: "rain", phonemes: ["r", "ai", "n"], emoji: "🌧️", phase: 3 },
+      { word: "boat", phonemes: ["b", "oa", "t"], emoji: "⛵", phase: 3 },
+      { word: "star", phonemes: ["s", "t", "ar"], emoji: "⭐", phase: 3 },
+      { word: "frog", phonemes: ["f", "r", "o", "g"], emoji: "🐸", phase: 4 },
+      { word: "crab", phonemes: ["c", "r", "a", "b"], emoji: "🦀", phase: 4 },
+      { word: "tent", phonemes: ["t", "e", "n", "t"], emoji: "⛺", phase: 4 },
+      { word: "lamp", phonemes: ["l", "a", "m", "p"], emoji: "🛋️", phase: 4 },
+      { word: "day", phonemes: ["d", "ay"], emoji: "☀️", phase: 5 },
+      { word: "cloud", phonemes: ["c", "l", "ou", "d"], emoji: "☁️", phase: 5 },
+      { word: "meat", phonemes: ["m", "ea", "t"], emoji: "🥩", phase: 5 },
+      { word: "cake", phonemes: ["c", "a_e", "k"], emoji: "🎂", phase: 5 },
+      { word: "kite", phonemes: ["k", "i_e", "t"], emoji: "🪁", phase: 5 },
+      { word: "said", phonemes: ["s", "a", "i", "d"], emoji: "💬", phase: "Tricky", isTricky: true },
+      { word: "house", phonemes: ["h", "o", "u", "s", "e"], emoji: "🏠", phase: "Tricky", isTricky: true }
+    ];
+
+    // Standard 40 Words Phonics Screening Check Model (20 Alien, 20 Real)
+    const MOCK_WORDS = [
+      // Section 1 (Phase 3 & 4: 12 Alien, 8 Real)
+      { word: "vap", isAlien: true, emoji: "👾" },
+      { word: "strop", isAlien: true, emoji: "👽" },
+      { word: "blem", isAlien: true, emoji: "👹" },
+      { word: "jash", isAlien: true, emoji: "🛸" },
+      { word: "quemp", isAlien: true, emoji: "👾" },
+      { word: "zoid", isAlien: true, emoji: "👽" },
+      { word: "chin", isAlien: false, emoji: "👦" },
+      { word: "bark", isAlien: false, emoji: "🐕" },
+      { word: "horn", isAlien: false, emoji: "📯" },
+      { word: "frog", isAlien: false, emoji: "🐸" },
+      { word: "flump", isAlien: true, emoji: "👹" },
+      { word: "snork", isAlien: true, emoji: "👾" },
+      { word: "drap", isAlien: true, emoji: "👽" },
+      { word: "grost", isAlien: true, emoji: "🛸" },
+      { word: "tent", isAlien: false, emoji: "⛺" },
+      { word: "swim", isAlien:
