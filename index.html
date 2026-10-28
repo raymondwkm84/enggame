@@ -19,14 +19,14 @@
     * { box-sizing: border-box; font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif; }
     body { margin: 0; padding: 16px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-    header { text-align: center; margin-bottom: 16px; }
+    header { text-align: center; margin-bottom: 14px; }
     h1 { margin: 4px 0; color: #2C3E50; font-size: 26px; }
     .subtitle { font-size: 14px; color: #7F8C8D; margin: 0; }
 
     /* Mode Navigation Tabs */
     .nav-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; justify-content: center; }
     .tab-btn {
-      padding: 10px 18px; border: 2px solid var(--primary); background: white;
+      padding: 9px 16px; border: 2px solid var(--primary); background: white;
       border-radius: 24px; font-size: 14px; font-weight: bold; cursor: pointer; color: var(--primary);
       transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
@@ -36,7 +36,7 @@
     .panel { display: none; background: white; border-radius: 20px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
     .panel.active { display: block; }
 
-    /* Phase Selector Pill Bar */
+    /* Phase Selector */
     .phase-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
     .phase-pill {
       padding: 6px 14px; border: 2px solid #BDC3C7; background: #F8F9F9; border-radius: 16px;
@@ -45,7 +45,6 @@
     .phase-pill.active { border-color: var(--secondary); background: #FEF9E7; color: #D35400; }
     .phase-pill.tricky-pill.active { border-color: var(--danger); background: #FDEDEC; color: var(--danger); }
 
-    /* Buttons */
     .btn-audio {
       background: #FFF4D9; border: 2px solid #F39C12; border-radius: 12px; padding: 8px 16px;
       font-size: 14px; font-weight: bold; cursor: pointer; color: #D35400; display: inline-flex; align-items: center; gap: 6px;
@@ -72,23 +71,47 @@
       font-size: 15px; cursor: pointer; font-weight: bold; color: #E67E22;
     }
 
-    /* --- MODE 2: Builder --- */
+    /* --- MODE 2: Phonics Builder (Natural Letter Grid & Split Digraph Loop) --- */
     .game-card { text-align: center; }
-    .tracker { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #95A5A6; margin-bottom: 10px; }
-    .image-clue { font-size: 72px; margin: 4px 0; line-height: 1.1; user-select: none; }
-    .audio-bar { display: flex; justify-content: center; gap: 10px; margin: 12px 0 16px; }
+    .tracker { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #95A5A6; margin-bottom: 8px; }
+    .image-clue { font-size: 72px; margin: 2px 0; line-height: 1.1; user-select: none; }
+    .audio-bar { display: flex; justify-content: center; gap: 10px; margin: 10px 0 16px; }
 
-    .phoneme-frame { display: flex; justify-content: center; gap: 8px; margin: 12px 0 18px; flex-wrap: wrap; }
-    .box-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    /* Container for letter boxes and split digraph bridge */
+    .frame-container {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0 16px;
+    }
+
+    .boxes-row { display: flex; gap: 8px; justify-content: center; }
+    .box-column { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
     .target-box {
-      width: 54px; height: 58px; border: 3px dashed #CBD5E1; border-radius: 12px; display: flex;
-      align-items: center; justify-content: center; font-size: 22px; font-weight: bold; background: #F8FAFC; cursor: pointer;
+      width: 52px; height: 56px; border: 3px dashed #CBD5E1; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; font-size: 24px; font-weight: bold; background: #F8FAFC; cursor: pointer;
     }
     .target-box.filled { border: 3px solid var(--accent); background: #E8F8F5; color: #27AE60; }
     .target-box.tricky-box.filled { border: 3px solid var(--danger); background: #FDEDEC; color: var(--danger); }
+
+    /* Sound Buttons & Bars */
     .sound-button { width: 12px; height: 12px; border-radius: 50%; background: #E67E22; }
-    .sound-bar { width: 32px; height: 6px; border-radius: 3px; background: #2980B9; }
+    .sound-bar { width: 34px; height: 6px; border-radius: 3px; background: #2980B9; }
     .tricky-mark { width: 14px; height: 6px; border-radius: 3px; background: var(--danger); }
+
+    /* Split Digraph Arc / Loop (Rainbow Smile) */
+    .split-arc {
+      position: absolute;
+      top: -12px;
+      height: 14px;
+      border: 3px solid #E67E22;
+      border-bottom: none;
+      border-radius: 14px 14px 0 0;
+      pointer-events: none;
+      display: none;
+    }
 
     .tile-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 16px 0; min-height: 50px; }
     .sound-tile {
@@ -119,7 +142,7 @@
 
   <header>
     <h1>🇬🇧 Year 1 Phonics Academy</h1>
-    <p class="subtitle">UK Letters & Sounds Curriculum • Pure Sounds • Screening Check</p>
+    <p class="subtitle">Accurate Pure Sounds • Real Word Spelling • Screening Check</p>
   </header>
 
   <div class="nav-tabs">
@@ -139,12 +162,12 @@
         <button class="phase-pill tricky-pill" onclick="setExplorerPhase('cew')">Tricky Words</button>
       </div>
 
-      <div style="font-size: 13px; color: #7F8C8D; text-align: center;">Tap a sound to hear the British Pure Sound and classroom catchphrase:</div>
+      <div style="font-size: 13px; color: #7F8C8D; text-align: center;">Tap a sound to hear the accurate British Pure Sound:</div>
       <div class="sound-grid" id="soundGrid"></div>
 
       <div class="lesson-box" id="lessonBox">
-        <div style="font-size: 42px; font-weight: bold; color: #2C3E50;" id="lessonPhoneme">ai</div>
-        <div class="mnemonic" id="lessonMnemonic">"Snail in the rain"</div>
+        <div style="font-size: 40px; font-weight: bold; color: #2C3E50;" id="lessonPhoneme">ch</div>
+        <div class="mnemonic" id="lessonMnemonic">"The train goes ch-ch-ch"</div>
         <button class="btn-audio" onclick="playCurrentPhonemeSound()">🔊 Hear Pure Sound</button>
         <div style="margin-top: 14px; font-size: 13px; color: #7F8C8D;">Example Words (Tap to listen):</div>
         <div class="word-examples" id="lessonExamples"></div>
@@ -156,7 +179,7 @@
       <div class="phase-bar" id="builderPhaseBar">
         <button class="phase-pill active" onclick="setBuilderPhase('3')">Phase 3</button>
         <button class="phase-pill" onclick="setBuilderPhase('4')">Phase 4</button>
-        <button class="phase-pill" onclick="setBuilderPhase('5')">Phase 5</button>
+        <button class="phase-pill" onclick="setBuilderPhase('5')">Phase 5 (Real Words)</button>
         <button class="phase-pill tricky-pill" onclick="setBuilderPhase('cew')">Tricky Words</button>
       </div>
 
@@ -173,7 +196,12 @@
           <button id="soundOutBtn" class="btn-audio" onclick="soundOutBuildWord()">🔤 Sound It Out</button>
         </div>
 
-        <div class="phoneme-frame" id="buildFrame"></div>
+        <!-- Phoneme & Split Digraph Frame -->
+        <div class="frame-container">
+          <div id="splitArc" class="split-arc"></div>
+          <div class="boxes-row" id="buildFrame"></div>
+        </div>
+
         <div class="tile-bank" id="buildBank"></div>
         <div id="buildStatus" class="status-msg"></div>
 
@@ -214,6 +242,73 @@
   </div>
 
   <script>
+    /* ----------------- PURE SOUND AUDIO ENGINE ----------------- */
+    // Special phonetic pronunciation map so TTS synthesizes accurate pure phonemes
+    // instead of spelling out letter names (e.g. stops spelling C-H)
+    const PHONEME_AUDIO_MAP = {
+      "ch": "ch",          // Supported by setting rate and context
+      "sh": "shh",
+      "th": "th",
+      "ng": "ng",
+      "ai": "ay",
+      "ee": "ee",
+      "igh": "eye",
+      "oa": "oh",
+      "oo": "ooh",
+      "ar": "ar",
+      "or": "or",
+      "ur": "er",
+      "ow": "ow",
+      "oi": "oy",
+      "ear": "ear",
+      "air": "air",
+      "ay": "ay",
+      "ou": "ow",
+      "ie": "eye",
+      "ea": "ee",
+      "oy": "oy",
+      "ir": "er",
+      "ue": "ooh",
+      "aw": "or",
+      "wh": "w",
+      "ph": "f",
+      "ew": "ooh",
+      "a-e": "ay",
+      "e-e": "ee",
+      "i-e": "eye",
+      "o-e": "oh",
+      "u-e": "you"
+    };
+
+    let ukVoice = null;
+    function loadVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      ukVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en_GB') ||
+                voices.find(v => v.lang.startsWith('en')) || null;
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function speak(text, rate = 0.8) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      if (ukVoice) utter.voice = ukVoice;
+      utter.lang = 'en-GB';
+      utter.rate = rate;
+      utter.pitch = 1.0;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakPhoneme(phoneme) {
+      // Use clean mapped sound so digraghs like 'ch' are pronounced as pure sounds
+      const cleanSound = PHONEME_AUDIO_MAP[phoneme] || phoneme;
+      speak(cleanSound, 0.7);
+    }
+
     /* ----------------- DATA DEFINITIONS ----------------- */
     const ALL_SOUNDS = {
       '3': [
@@ -260,15 +355,13 @@
         { p: "wh", m: "Whistle while you work", ex: ["whale", "wheel", "white"] },
         { p: "ph", m: "Dolphin on the phone", ex: ["phone", "photo", "dolphin"] },
         { p: "ew", m: "Chew the stew", ex: ["screw", "chew", "flew"] },
-        { p: "oe", m: "Stub your toe", ex: ["toe", "goes", "doe"] },
-        { p: "au", m: "Paul the astronaut", ex: ["launch", "haunt", "August"] },
-        { p: "a_e", m: "Make a cake (Magic e)", ex: ["cake", "snake", "grape"] },
-        { p: "i_e", m: "Nice smile (Magic e)", ex: ["kite", "bike", "time"] },
-        { p: "o_e", m: "Phone home (Magic e)", ex: ["bone", "home", "rope"] },
-        { p: "u_e", m: "Huge brute (Magic e)", ex: ["cube", "tube", "flute"] }
+        { p: "a-e", m: "Make a cake (Split Digraph)", ex: ["cake", "take", "snake"] },
+        { p: "i-e", m: "Nice smile (Split Digraph)", ex: ["kite", "bike", "time"] },
+        { p: "o-e", m: "Phone home (Split Digraph)", ex: ["bone", "home", "rope"] },
+        { p: "u-e", m: "Huge brute (Split Digraph)", ex: ["cube", "tube", "flute"] }
       ],
       'cew': [
-        { p: "said", m: "Tricky 'ai' makes short /e/", ex: ["said"] },
+        { p: "said", m: "Tricky 'ai' makes /e/", ex: ["said"] },
         { p: "one", m: "Sounds just like 'won'", ex: ["one"] },
         { p: "come", m: "Tricky 'o_e' sound", ex: ["come", "some"] },
         { p: "house", m: "Quiet 'e' at the end", ex: ["house", "mouse"] },
@@ -278,80 +371,78 @@
       ]
     };
 
+    // Realistic Real-Word Builder Definitions
+    // Notice how words like 'cake' or 'take' are strictly spelled: ['c','a','k','e'] or ['t','a','k','e']
+    // with split connection indices, so children always see authentic English words!
     const BUILD_LIBRARY = {
       '3': [
-        { word: "fish", phonemes: ["f", "i", "sh"], emoji: "🐟" },
-        { word: "chip", phonemes: ["ch", "i", "p"], emoji: "🍟" },
-        { word: "moth", phonemes: ["m", "o", "th"], emoji: "🦋" },
-        { word: "ring", phonemes: ["r", "i", "ng"], emoji: "💍" },
-        { word: "rain", phonemes: ["r", "ai", "n"], emoji: "🌧️" },
-        { word: "feet", phonemes: ["f", "ee", "t"], emoji: "🦶" },
-        { word: "boat", phonemes: ["b", "oa", "t"], emoji: "⛵" },
-        { word: "moon", phonemes: ["m", "oo", "n"], emoji: "🌙" },
-        { word: "star", phonemes: ["s", "t", "ar"], emoji: "⭐" },
-        { word: "fork", phonemes: ["f", "or", "k"], emoji: "🍴" },
-        { word: "surf", phonemes: ["s", "ur", "f"], emoji: "🏄" },
-        { word: "cow", phonemes: ["c", "ow"], emoji: "🐄" },
-        { word: "coin", phonemes: ["c", "oi", "n"], emoji: "🪙" },
-        { word: "night", phonemes: ["n", "igh", "t"], emoji: "🌃" },
-        { word: "chair", phonemes: ["ch", "air"], emoji: "🪑" }
+        { word: "fish", tiles: ["f", "i", "sh"], phonemes: ["f", "i", "sh"], emoji: "🐟" },
+        { word: "chip", tiles: ["ch", "i", "p"], phonemes: ["ch", "i", "p"], emoji: "🍟" },
+        { word: "moth", tiles: ["m", "o", "th"], phonemes: ["m", "o", "th"], emoji: "🦋" },
+        { word: "ring", tiles: ["r", "i", "ng"], phonemes: ["r", "i", "ng"], emoji: "💍" },
+        { word: "rain", tiles: ["r", "ai", "n"], phonemes: ["r", "ai", "n"], emoji: "🌧️" },
+        { word: "feet", tiles: ["f", "ee", "t"], phonemes: ["f", "ee", "t"], emoji: "🦶" },
+        { word: "boat", tiles: ["b", "oa", "t"], phonemes: ["b", "oa", "t"], emoji: "⛵" },
+        { word: "moon", tiles: ["m", "oo", "n"], phonemes: ["m", "oo", "n"], emoji: "🌙" },
+        { word: "star", tiles: ["s", "t", "ar"], phonemes: ["s", "t", "ar"], emoji: "⭐" },
+        { word: "fork", tiles: ["f", "or", "k"], phonemes: ["f", "or", "k"], emoji: "🍴" },
+        { word: "surf", tiles: ["s", "ur", "f"], phonemes: ["s", "ur", "f"], emoji: "🏄" },
+        { word: "cow", tiles: ["c", "ow"], phonemes: ["c", "ow"], emoji: "🐄" },
+        { word: "coin", tiles: ["c", "oi", "n"], emoji: "🪙" },
+        { word: "night", tiles: ["n", "igh", "t"], emoji: "🌃" },
+        { word: "chair", tiles: ["ch", "air"], emoji: "🪑" }
       ],
       '4': [
-        { word: "frog", phonemes: ["f", "r", "o", "g"], emoji: "🐸" },
-        { word: "crab", phonemes: ["c", "r", "a", "b"], emoji: "🦀" },
-        { word: "tent", phonemes: ["t", "e", "n", "t"], emoji: "⛺" },
-        { word: "lamp", phonemes: ["l", "a", "m", "p"], emoji: "🛋️" },
-        { word: "nest", phonemes: ["n", "e", "s", "t"], emoji: "🪺" },
-        { word: "drum", phonemes: ["d", "r", "u", "m"], emoji: "🥁" },
-        { word: "flag", phonemes: ["f", "l", "a", "g"], emoji: "🚩" },
-        { word: "hand", phonemes: ["h", "a", "n", "d"], emoji: "✋" },
-        { word: "milk", phonemes: ["m", "i", "l", "k"], emoji: "🥛" },
-        { word: "gift", phonemes: ["g", "i", "f", "t"], emoji: "🎁" },
-        { word: "plug", phonemes: ["p", "l", "u", "g"], emoji: "🔌" },
-        { word: "swim", phonemes: ["s", "w", "i", "m"], emoji: "🏊" },
-        { word: "spoon", phonemes: ["s", "p", "oo", "n"], emoji: "🥄" },
-        { word: "toast", phonemes: ["t", "oa", "s", "t"], emoji: "🍞" },
-        { word: "clown", phonemes: ["c", "l", "ow", "n"], emoji: "🤡" }
+        { word: "frog", tiles: ["f", "r", "o", "g"], emoji: "🐸" },
+        { word: "crab", tiles: ["c", "r", "a", "b"], emoji: "🦀" },
+        { word: "tent", tiles: ["t", "e", "n", "t"], emoji: "⛺" },
+        { word: "lamp", tiles: ["l", "a", "m", "p"], emoji: "🛋️" },
+        { word: "nest", tiles: ["n", "e", "s", "t"], emoji: "🪺" },
+        { word: "drum", tiles: ["d", "r", "u", "m"], emoji: "🥁" },
+        { word: "flag", tiles: ["f", "l", "a", "g"], emoji: "🚩" },
+        { word: "hand", tiles: ["h", "a", "n", "d"], emoji: "✋" },
+        { word: "milk", tiles: ["m", "i", "l", "k"], emoji: "🥛" },
+        { word: "gift", tiles: ["g", "i", "f", "t"], emoji: "🎁" },
+        { word: "plug", tiles: ["p", "l", "u", "g"], emoji: "🔌" },
+        { word: "swim", tiles: ["s", "w", "i", "m"], emoji: "🏊" },
+        { word: "toast", tiles: ["t", "oa", "s", "t"], emoji: "🍞" },
+        { word: "stamp", tiles: ["s", "t", "a", "m", "p"], emoji: "📮" },
+        { word: "clown", tiles: ["c", "l", "ow", "n"], emoji: "🤡" }
       ],
       '5': [
-        { word: "day", phonemes: ["d", "ay"], emoji: "☀️" },
-        { word: "cloud", phonemes: ["c", "l", "ou", "d"], emoji: "☁️" },
-        { word: "pie", phonemes: ["p", "ie"], emoji: "🥧" },
-        { word: "meat", phonemes: ["m", "ea", "t"], emoji: "🥩" },
-        { word: "boy", phonemes: ["b", "oy"], emoji: "👦" },
-        { word: "bird", phonemes: ["b", "ir", "d"], emoji: "🐦" },
-        { word: "blue", phonemes: ["b", "l", "ue"], emoji: "💙" },
-        { word: "claw", phonemes: ["c", "l", "aw"], emoji: "🦞" },
-        { word: "whale", phonemes: ["wh", "a_e", "l"], emoji: "🐋" },
-        { word: "cake", phonemes: ["c", "a_e", "k"], emoji: "🎂" },
-        { word: "kite", phonemes: ["k", "i_e", "t"], emoji: "🪁" },
-        { word: "bone", phonemes: ["b", "o_e", "n"], emoji: "🦴" },
-        { word: "cube", phonemes: ["c", "u_e", "b"], emoji: "🧊" },
-        { word: "straw", phonemes: ["s", "t", "r", "aw"], emoji: "🥤" },
-        { word: "screw", phonemes: ["s", "c", "r", "ew"], emoji: "🔩" }
+        // Split digraph words spelled naturally as individual letters, with split indices [start, end]
+        { word: "cake", tiles: ["c", "a", "k", "e"], split: [1, 3], emoji: "🎂", hint: "Split digraph a-e (Magic e)" },
+        { word: "take", tiles: ["t", "a", "k", "e"], split: [1, 3], emoji: "🤲", hint: "Split digraph a-e (Magic e)" },
+        { word: "kite", tiles: ["k", "i", "t", "e"], split: [1, 3], emoji: "🪁", hint: "Split digraph i-e (Magic e)" },
+        { word: "bone", tiles: ["b", "o", "n", "e"], split: [1, 3], emoji: "🦴", hint: "Split digraph o-e (Magic e)" },
+        { word: "cube", tiles: ["c", "u", "b", "e"], split: [1, 3], emoji: "🧊", hint: "Split digraph u-e (Magic e)" },
+        { word: "snake", tiles: ["s", "n", "a", "k", "e"], split: [2, 4], emoji: "🐍", hint: "Split digraph a-e" },
+        { word: "time", tiles: ["t", "i", "m", "e"], split: [1, 3], emoji: "⏰", hint: "Split digraph i-e" },
+        { word: "home", tiles: ["h", "o", "m", "e"], split: [1, 3], emoji: "🏡", hint: "Split digraph o-e" },
+        { word: "day", tiles: ["d", "ay"], emoji: "☀️" },
+        { word: "cloud", tiles: ["c", "l", "ou", "d"], emoji: "☁️" },
+        { word: "pie", tiles: ["p", "ie"], emoji: "🥧" },
+        { word: "meat", tiles: ["m", "ea", "t"], emoji: "🥩" },
+        { word: "boy", tiles: ["b", "oy"], emoji: "👦" },
+        { word: "bird", tiles: ["b", "ir", "d"], emoji: "🐦" },
+        { word: "blue", tiles: ["b", "l", "ue"], emoji: "💙" }
       ],
       'cew': [
-        { word: "said", phonemes: ["s", "a", "i", "d"], emoji: "💬", hint: "Tricky 'ai' makes /e/" },
-        { word: "the", phonemes: ["t", "h", "e"], emoji: "👉", hint: "Tricky 'e'" },
-        { word: "they", phonemes: ["t", "h", "e", "y"], emoji: "👥", hint: "Tricky 'ey'" },
-        { word: "one", phonemes: ["o", "n", "e"], emoji: "1️⃣", hint: "Sounds like 'won'" },
-        { word: "come", phonemes: ["c", "o", "m", "e"], emoji: "🏃", hint: "Tricky 'o_e'" },
-        { word: "some", phonemes: ["s", "o", "m", "e"], emoji: "🥣", hint: "Tricky 'o_e'" },
-        { word: "house", phonemes: ["h", "o", "u", "s", "e"], emoji: "🏠", hint: "Silent 'e'" },
-        { word: "school", phonemes: ["s", "c", "h", "o", "o", "l"], emoji: "🏫", hint: "'ch' makes /k/" },
-        { word: "friend", phonemes: ["f", "r", "i", "e", "n", "d"], emoji: "🤝", hint: "'ie' makes /e/" },
-        { word: "today", phonemes: ["t", "o", "d", "a", "y"], emoji: "📅", hint: "Compound word" },
-        { word: "love", phonemes: ["l", "o", "v", "e"], emoji: "❤️", hint: "Tricky 'o'" },
-        { word: "were", phonemes: ["w", "e", "r", "e"], emoji: "⏳", hint: "Tricky vowel sound" },
-        { word: "there", phonemes: ["t", "h", "e", "r", "e"], emoji: "📍", hint: "Tricky spelling" },
-        { word: "where", phonemes: ["w", "h", "e", "r", "e"], emoji: "❓", hint: "Tricky spelling" },
-        { word: "once", phonemes: ["o", "n", "c", "e"], emoji: "📖", hint: "Sounds like 'wunss'" }
+        { word: "said", tiles: ["s", "a", "i", "d"], emoji: "💬", hint: "Tricky 'ai' makes /e/" },
+        { word: "the", tiles: ["t", "h", "e"], emoji: "👉", hint: "Tricky 'e'" },
+        { word: "they", tiles: ["t", "h", "e", "y"], emoji: "👥", hint: "Tricky 'ey'" },
+        { word: "one", tiles: ["o", "n", "e"], emoji: "1️⃣", hint: "Sounds like 'won'" },
+        { word: "come", tiles: ["c", "o", "m", "e"], emoji: "🏃", hint: "Tricky 'o_e'" },
+        { word: "some", tiles: ["s", "o", "m", "e"], emoji: "🥣", hint: "Tricky 'o_e'" },
+        { word: "house", tiles: ["h", "o", "u", "s", "e"], emoji: "🏠", hint: "Silent 'e'" },
+        { word: "school", tiles: ["s", "c", "h", "o", "o", "l"], emoji: "🏫", hint: "'ch' makes /k/" },
+        { word: "friend", tiles: ["f", "r", "i", "e", "n", "d"], emoji: "🤝", hint: "'ie' makes /e/" },
+        { word: "today", tiles: ["t", "o", "d", "a", "y"], emoji: "📅", hint: "Compound word" }
       ]
     };
 
-    // 40 Authentic Words (Phonics Screening Check Structure: 20 Alien, 20 Real)
+    // Authentic 40 Words Screening Check
     const MOCK_WORDS = [
-      // Section 1: Phase 3 & 4 (12 Pseudo, 8 Real)
       { word: "vap", isAlien: true, emoji: "👾" },
       { word: "strop", isAlien: true, emoji: "👽" },
       { word: "blem", isAlien: true, emoji: "👹" },
@@ -372,8 +463,6 @@
       { word: "gran", isAlien: false, emoji: "👵" },
       { word: "chay", isAlien: true, emoji: "👾" },
       { word: "koob", isAlien: true, emoji: "👽" },
-
-      // Section 2: Phase 5 & Split Digraphs (8 Pseudo, 12 Real)
       { word: "voot", isAlien: true, emoji: "👹" },
       { word: "yune", isAlien: true, emoji: "🛸" },
       { word: "phope", isAlien: true, emoji: "👾" },
@@ -396,31 +485,7 @@
       { word: "whale", isAlien: false, emoji: "🐋" }
     ];
 
-    /* ----------------- AUDIO SYSTEM (UK Voice) ----------------- */
-    let ukVoice = null;
-    function loadVoices() {
-      if (!('speechSynthesis' in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      ukVoice = voices.find(v => v.lang === 'en-GB' || v.lang === 'en_GB') ||
-                voices.find(v => v.lang.startsWith('en')) || null;
-    }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-      loadVoices();
-    }
-
-    function speak(text, rate = 0.8) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      if (ukVoice) utter.voice = ukVoice;
-      utter.lang = 'en-GB';
-      utter.rate = rate;
-      utter.pitch = 1.05;
-      window.speechSynthesis.speak(utter);
-    }
-
-    /* ----------------- TAB NAVIGATION ----------------- */
+    /* ----------------- TAB SWITCHER ----------------- */
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach((b, i) => {
         b.classList.toggle('active', ['explorer', 'builder', 'mock'][i] === tabId);
@@ -451,7 +516,7 @@
       list.forEach((item, idx) => {
         const card = document.createElement('div');
         card.className = `sound-card ${idx === currentSoundIndex ? 'active-sound' : ''}`;
-        card.innerText = item.p.replace('_', '-');
+        card.innerText = item.p;
         card.onclick = () => {
           currentSoundIndex = idx;
           renderSoundExplorer();
@@ -464,7 +529,7 @@
 
     function showLesson(idx) {
       const item = ALL_SOUNDS[currentExplorerPhase][idx];
-      document.getElementById('lessonPhoneme').innerText = item.p.replace('_', '-');
+      document.getElementById('lessonPhoneme').innerText = item.p;
       document.getElementById('lessonMnemonic').innerText = `"${item.m}"`;
 
       const exWrap = document.getElementById('lessonExamples');
@@ -479,8 +544,8 @@
     }
 
     function playCurrentPhonemeSound() {
-      const p = ALL_SOUNDS[currentExplorerPhase][currentSoundIndex].p.replace('_', ' ');
-      speak(p, 0.75);
+      const p = ALL_SOUNDS[currentExplorerPhase][currentSoundIndex].p;
+      speakPhoneme(p);
     }
 
     /* ----------------- MODE 2: PHONICS BUILDER ----------------- */
@@ -513,11 +578,11 @@
 
       const frame = document.getElementById('buildFrame');
       frame.innerHTML = '';
-      buildSlots = new Array(data.phonemes.length).fill(null);
+      buildSlots = new Array(data.tiles.length).fill(null);
 
-      data.phonemes.forEach((p, idx) => {
+      data.tiles.forEach((t, idx) => {
         const wrap = document.createElement('div');
-        wrap.className = 'box-wrap';
+        wrap.className = 'box-column';
 
         const box = document.createElement('div');
         box.className = `target-box ${isCEW ? 'tricky-box' : ''}`;
@@ -525,25 +590,39 @@
         box.title = "Tap to remove";
         box.onclick = () => removeBuildTile(idx);
 
-        const btn = document.createElement('div');
+        const indicator = document.createElement('div');
         if (isCEW) {
-          btn.className = 'tricky-mark';
+          indicator.className = 'tricky-mark';
         } else {
-          btn.className = (p.length > 1 && !p.includes('_')) ? 'sound-bar' : 'sound-button';
+          indicator.className = (t.length > 1) ? 'sound-bar' : 'sound-button';
         }
 
         wrap.appendChild(box);
-        wrap.appendChild(btn);
+        wrap.appendChild(indicator);
         frame.appendChild(wrap);
       });
 
-      // Distractors
-      const distractors = isCEW 
-        ? ['a', 'e', 'i', 'o', 'u', 's', 't', 'r', 'y'] 
-        : ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai', 'l', 'sh'];
+      // Split Digraph Visual Smile Bridge
+      const arc = document.getElementById('splitArc');
+      if (data.split) {
+        arc.style.display = 'block';
+        // Position bridge over the two connected vowel letters
+        const boxWidth = 52 + 8; // width + gap
+        const leftOffset = data.split[0] * boxWidth + 26;
+        const width = (data.split[1] - data.split[0]) * boxWidth;
+        arc.style.left = `${leftOffset}px`;
+        arc.style.width = `${width}px`;
+      } else {
+        arc.style.display = 'none';
+      }
 
-      const tiles = [...data.phonemes];
-      while (tiles.length < data.phonemes.length + 3) {
+      // Generate Letter Tiles (Authentic Tiles + Distractors)
+      const distractors = isCEW 
+        ? ['a', 'e', 'i', 'o', 'u', 's', 't'] 
+        : ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai'];
+
+      const tiles = [...data.tiles];
+      while (tiles.length < data.tiles.length + 3) {
         const rand = distractors[Math.floor(Math.random() * distractors.length)];
         if (!tiles.includes(rand)) tiles.push(rand);
       }
@@ -554,24 +633,24 @@
       tiles.forEach(t => {
         const tile = document.createElement('div');
         tile.className = 'sound-tile';
-        tile.innerText = t.replace('_', '-');
+        tile.innerText = t;
         tile.onclick = () => pickBuildTile(t, tile);
         bank.appendChild(tile);
       });
     }
 
-    function pickBuildTile(ph, elem) {
+    function pickBuildTile(tileText, elem) {
       const empty = buildSlots.findIndex(s => s === null);
       if (empty === -1) return;
 
-      buildSlots[empty] = { ph, elem };
+      buildSlots[empty] = { tileText, elem };
       elem.classList.add('used');
 
       const box = document.getElementById(`bslot-${empty}`);
-      box.innerText = ph.replace('_', '-');
+      box.innerText = tileText;
       box.classList.add('filled');
 
-      speak(ph.replace('_', ' '), 0.75);
+      speakPhoneme(tileText);
       checkBuildAnswer();
     }
 
@@ -590,7 +669,7 @@
     function checkBuildAnswer() {
       if (buildSlots.includes(null)) return;
       const data = BUILD_LIBRARY[currentBuildPhase][buildIndex];
-      const isCorrect = buildSlots.every((s, i) => s.ph === data.phonemes[i]);
+      const isCorrect = buildSlots.every((s, i) => s.tileText === data.tiles[i]);
       const status = document.getElementById('buildStatus');
 
       if (isCorrect) {
@@ -631,16 +710,16 @@
     function soundOutBuildWord() {
       const data = BUILD_LIBRARY[currentBuildPhase][buildIndex];
       let delay = 0;
-      data.phonemes.forEach((p, idx) => {
+      data.tiles.forEach((t, idx) => {
         setTimeout(() => {
           const box = document.getElementById(`bslot-${idx}`);
           if (box) {
-            box.style.transform = "scale(1.15)";
+            box.style.transform = "scale(1.18)";
             setTimeout(() => box.style.transform = "scale(1)", 250);
           }
-          speak(p.replace('_', ' '), 0.75);
+          speakPhoneme(t);
         }, delay);
-        delay += 600;
+        delay += 650;
       });
     }
 
@@ -685,7 +764,6 @@
       }
     }
 
-    /* ----------------- INITIALISATION ----------------- */
     window.addEventListener('DOMContentLoaded', () => {
       renderSoundExplorer();
       renderBuilder();
