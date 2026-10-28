@@ -133,7 +133,7 @@
 
   <header>
     <h1>🇬🇧 UK Year 1 Phonics Academy</h1>
-    <p class="subtitle">Complete Phonics Curriculum • Phase by Phase & Mega Mix</p>
+    <p class="subtitle">Complete Curriculum • 30+ Questions Per Mode • Mega Mix</p>
   </header>
 
   <!-- 1. TOP LEVEL PHASE NAVIGATION -->
@@ -146,12 +146,12 @@
     <button class="phase-tab" onclick="selectPhase('mock')">👾 Screening Mock 40</button>
   </div>
 
-  <!-- 2. SUB LEVEL GAME NAVIGATION (Hidden in Mock mode) -->
+  <!-- 2. SUB LEVEL GAME NAVIGATION -->
   <div class="game-nav" id="subGameNav">
     <button class="game-tab active" onclick="selectGame('builder')">🧩 Builder</button>
-    <button class="game-tab" onclick="selectGame('picmatch')">🖼️ Picture Match</button>
-    <button class="game-tab" onclick="selectGame('detective')">🕵️ Sound Detective</button>
-    <button class="game-tab" onclick="selectGame('sentence')">📖 Sentence Match</button>
+    <button class="game-tab" onclick="selectGame('picmatch')">🖼️ Picture Match (30)</button>
+    <button class="game-tab" onclick="selectGame('detective')">🕵️ Sound Detective (30)</button>
+    <button class="game-tab" onclick="selectGame('sentence')">📖 Sentence Match (30)</button>
   </div>
 
   <div class="container">
@@ -182,7 +182,7 @@
     <div id="game-picmatch" class="card" style="display: none;">
       <div class="tracker">
         <span id="picPhaseTag">Phase 3</span>
-        <span id="picCounter">1 / 15</span>
+        <span id="picCounter">1 / 30</span>
       </div>
       <div id="picClue" class="image-clue">🍟</div>
       <div class="choice-grid" id="picChoices"></div>
@@ -194,7 +194,7 @@
     <div id="game-detective" class="card" style="display: none;">
       <div class="tracker">
         <span id="detPhaseTag">Sound Detective</span>
-        <span id="detectiveCounter">1 / 10</span>
+        <span id="detectiveCounter">1 / 30</span>
       </div>
       <p style="font-size: 14px; color: #555; margin: 8px 0;">Do the highlighted letters make the <b>SAME</b> sound in both words?</p>
       <div class="detective-box">
@@ -220,7 +220,7 @@
     <div id="game-sentence" class="card" style="display: none;">
       <div class="tracker">
         <span id="sentencePhaseTag">Sentence Reading</span>
-        <span id="sentenceCounter">1 / 10</span>
+        <span id="sentenceCounter">1 / 30</span>
       </div>
       <div id="sentenceText" class="sentence-card">"The frog can jump onto the wooden log."</div>
       <button class="big-btn" style="margin-bottom: 12px;" onclick="readCurrentSentence()">🔊 Read Sentence</button>
@@ -254,7 +254,6 @@
   </div>
 
   <script>
-    /* ----------------- SPEECH SYNTHESIS ENGINE ----------------- */
     function speakFullWord(word) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
@@ -268,7 +267,7 @@
       return [...arr].sort(() => Math.random() - 0.5);
     }
 
-    /* ----------------- DATA DEFINITIONS (EXPANDED) ----------------- */
+    /* ----------------- 1. BUILDER DATA ----------------- */
     const RAW_BUILD_LIBRARY = {
       '3': [
         { word: "fish", letterSlots: ["f", "i", "sh"], inputTiles: ["f", "i", "sh"], emoji: "🐟" },
@@ -385,111 +384,109 @@
       ]
     };
 
-    const RAW_PIC_DATA = {
-      '3': [
-        { emoji: "🍟", correct: "chip", options: ["chip", "ship"] },
-        { emoji: "🐟", correct: "fish", options: ["fish", "dish"] },
-        { emoji: "💍", correct: "ring", options: ["ring", "king"] },
-        { emoji: "👑", correct: "king", options: ["ring", "king"] },
-        { emoji: "⛵", correct: "boat", options: ["boat", "coat"] },
-        { emoji: "🧥", correct: "coat", options: ["boat", "coat"] },
-        { emoji: "🌙", correct: "moon", options: ["moon", "spoon"] },
-        { emoji: "📖", correct: "book", options: ["book", "boot"] },
-        { emoji: "🪙", correct: "coin", options: ["coin", "join"] },
-        { emoji: "🍴", correct: "fork", options: ["fork", "pork"] }
-      ],
-      '4': [
-        { emoji: "🐸", correct: "frog", options: ["frog", "flag"] },
-        { emoji: "🚩", correct: "flag", options: ["frog", "flag"] },
-        { emoji: "🦀", correct: "crab", options: ["crab", "crib"] },
-        { emoji: "⛺", correct: "tent", options: ["tent", "bent"] },
-        { emoji: "🛋️", correct: "lamp", options: ["lamp", "camp"] },
-        { emoji: "🪺", correct: "nest", options: ["nest", "rest"] },
-        { emoji: "🥁", correct: "drum", options: ["drum", "drop"] },
-        { emoji: "🥛", correct: "milk", options: ["milk", "silk"] },
-        { emoji: "🏊", correct: "swim", options: ["swim", "slim"] },
-        { emoji: "🍞", correct: "toast", options: ["toast", "roast"] }
-      ],
-      '5': [
-        { emoji: "🏑", correct: "hockey", options: ["hockey", "jockey"] },
-        { emoji: "🏇", correct: "jockey", options: ["hockey", "jockey"] },
-        { emoji: "🐒", correct: "monkey", options: ["monkey", "donkey"] },
-        { emoji: "🫏", correct: "donkey", options: ["monkey", "donkey"] },
-        { emoji: "🎂", correct: "cake", options: ["cake", "bake"] },
-        { emoji: "🪁", correct: "kite", options: ["kite", "bite"] },
-        { emoji: "🚲", correct: "bike", options: ["bike", "hike"] },
-        { emoji: "👃", correct: "nose", options: ["nose", "rose"] },
-        { emoji: "☁️", correct: "cloud", options: ["cloud", "clown"] },
-        { emoji: "🦞", correct: "claw", options: ["claw", "straw"] }
-      ],
-      'cew': [
-        { emoji: "💬", correct: "said", options: ["said", "sand"] },
-        { emoji: "1️⃣", correct: "one", options: ["one", "won"] },
-        { emoji: "🏠", correct: "house", options: ["house", "horse"] },
-        { emoji: "🏫", correct: "school", options: ["school", "spoon"] },
-        { emoji: "🤝", correct: "friend", options: ["friend", "from"] },
-        { emoji: "❤️", correct: "love", options: ["love", "live"] },
-        { emoji: "🚪", correct: "push", options: ["push", "pull"] },
-        { emoji: "🧲", correct: "pull", options: ["push", "pull"] }
-      ]
-    };
+    /* ----------------- 2. PICTURE MATCH: 30 QUESTIONS ----------------- */
+    const EXPANDED_PIC_MATCH = [
+      { emoji: "🏑", correct: "hockey", options: ["hockey", "jockey"] },
+      { emoji: "🏇", correct: "jockey", options: ["hockey", "jockey"] },
+      { emoji: "🐒", correct: "monkey", options: ["monkey", "donkey"] },
+      { emoji: "🫏", correct: "donkey", options: ["monkey", "donkey"] },
+      { emoji: "🧣", correct: "towel", options: ["throw", "towel"] },
+      { emoji: "🥏", correct: "throw", options: ["throw", "towel"] },
+      { emoji: "🪙", correct: "coin", options: ["coin", "corn"] },
+      { emoji: "🌽", correct: "corn", options: ["coin", "corn"] },
+      { emoji: "🐌", correct: "snail", options: ["snail", "sail"] },
+      { emoji: "⛵", correct: "sail", options: ["snail", "sail"] },
+      { emoji: "🍟", correct: "chip", options: ["chip", "ship"] },
+      { emoji: "🚢", correct: "ship", options: ["chip", "ship"] },
+      { emoji: "👑", correct: "king", options: ["king", "ring"] },
+      { emoji: "💍", correct: "ring", options: ["king", "ring"] },
+      { emoji: "🐸", correct: "frog", options: ["frog", "flag"] },
+      { emoji: "🚩", correct: "flag", options: ["frog", "flag"] },
+      { emoji: "🦀", correct: "crab", options: ["crab", "crib"] },
+      { emoji: "⛺", correct: "tent", options: ["tent", "bent"] },
+      { emoji: "🪺", correct: "nest", options: ["nest", "rest"] },
+      { emoji: "🥁", correct: "drum", options: ["drum", "drop"] },
+      { emoji: "🥛", correct: "milk", options: ["milk", "silk"] },
+      { emoji: "🍞", correct: "toast", options: ["toast", "roast"] },
+      { emoji: "🎂", correct: "cake", options: ["cake", "bake"] },
+      { emoji: "🪁", correct: "kite", options: ["kite", "bite"] },
+      { emoji: "🚲", correct: "bike", options: ["bike", "hike"] },
+      { emoji: "👃", correct: "nose", options: ["nose", "rose"] },
+      { emoji: "☁️", correct: "cloud", options: ["cloud", "clown"] },
+      { emoji: "🤡", correct: "clown", options: ["cloud", "clown"] },
+      { emoji: "🦞", correct: "claw", options: ["claw", "straw"] },
+      { emoji: "🥤", correct: "straw", options: ["claw", "straw"] }
+    ];
 
-    const RAW_DET_DATA = {
-      '3': [
-        { w1: "rain", h1: "ai", e1: "🌧️", w2: "snail", h2: "ai", e2: "🐌", same: true },
-        { w1: "night", h1: "igh", e1: "🌃", w2: "light", h2: "igh", e2: "💡", same: true },
-        { w1: "book", h1: "oo", e1: "📖", w2: "moon", h2: "oo", e2: "🌙", same: false },
-        { w1: "fork", h1: "or", e1: "🍴", w2: "horn", h2: "or", e2: "📯", same: true },
-        { w1: "thin", h1: "th", e1: "🪡", w2: "this", h2: "th", e2: "👉", same: false }
-      ],
-      '4': [
-        { w1: "flag", h1: "fl", e1: "🚩", w2: "flip", h2: "fl", e2: "🐬", same: true },
-        { w1: "stop", h1: "st", e1: "🛑", w2: "nest", h2: "st", e2: "🪺", same: true },
-        { w1: "drum", h1: "dr", e1: "🥁", w2: "drop", h2: "dr", e2: "💧", same: true },
-        { w1: "lamp", h1: "mp", e1: "🛋️", w2: "jump", h2: "mp", e2: "🦘", same: true }
-      ],
-      '5': [
-        { w1: "pillow", h1: "ow", e1: "🛋️", w2: "cow", h2: "ow", e2: "🐄", same: false },
-        { w1: "meat", h1: "ea", e1: "🥩", w2: "bread", h2: "ea", e2: "🍞", same: false },
-        { w1: "cloud", h1: "ou", e1: "☁️", w2: "soup", h2: "ou", e2: "🥣", same: false },
-        { w1: "girl", h1: "ir", e1: "👧", w2: "bird", h2: "ir", e2: "🐦", same: true },
-        { w1: "day", h1: "ay", e1: "☀️", w2: "tray", h2: "ay", e2: "🍱", same: true }
-      ],
-      'cew': [
-        { w1: "said", h1: "ai", e1: "💬", w2: "rain", h2: "ai", e2: "🌧️", same: false },
-        { w1: "some", h1: "o", e1: "🥣", w2: "come", h2: "o", e2: "🏃", same: true },
-        { w1: "there", h1: "ere", e1: "📍", w2: "were", h2: "ere", e2: "⏳", same: false },
-        { w1: "one", h1: "o", e1: "1️⃣", w2: "bone", h2: "o", e2: "🦴", same: false }
-      ]
-    };
+    /* ----------------- 3. SOUND DETECTIVE: 30 QUESTIONS ----------------- */
+    const EXPANDED_DETECTIVE = [
+      { w1: "pillow", h1: "ow", e1: "🛋️", w2: "cow", h2: "ow", e2: "🐄", same: false },
+      { w1: "meat", h1: "ea", e1: "🥩", w2: "bread", h2: "ea", e2: "🍞", same: false },
+      { w1: "cloud", h1: "ou", e1: "☁️", w2: "soup", h2: "ou", e2: "🥣", same: false },
+      { w1: "rain", h1: "ai", e1: "🌧️", w2: "snail", h2: "ai", e2: "🐌", same: true },
+      { w1: "night", h1: "igh", e1: "🌃", w2: "light", h2: "igh", e2: "💡", same: true },
+      { w1: "book", h1: "oo", e1: "📖", w2: "moon", h2: "oo", e2: "🌙", same: false },
+      { w1: "fork", h1: "or", e1: "🍴", w2: "horn", h2: "or", e2: "📯", same: true },
+      { w1: "girl", h1: "ir", e1: "👧", w2: "bird", h2: "ir", e2: "🐦", same: true },
+      { w1: "day", h1: "ay", e1: "☀️", w2: "tray", h2: "ay", e2: "🍱", same: true },
+      { w1: "chin", h1: "ch", e1: "👦", w2: "school", h2: "ch", e2: "🏫", same: false },
+      { w1: "this", h1: "th", e1: "👉", w2: "thin", h2: "th", e2: "🪡", same: false },
+      { w1: "foot", h1: "oo", e1: "🦶", w2: "wood", h2: "oo", e2: "🪵", same: true },
+      { w1: "spoon", h1: "oo", e1: "🥄", w2: "zoo", h2: "oo", e2: "🦁", same: true },
+      { w1: "head", h1: "ea", e1: "🧒", w2: "leaf", h2: "ea", e2: "🍃", same: false },
+      { w1: "sea", h1: "ea", e1: "🌊", w2: "tea", h2: "ea", e2: "🍵", same: true },
+      { w1: "blow", h1: "ow", e1: "🌬️", w2: "snow", h2: "ow", e2: "❄️", same: true },
+      { w1: "town", h1: "ow", e1: "🏙️", w2: "clown", h2: "ow", e2: "🤡", same: true },
+      { w1: "brown", h1: "ow", e1: "🟫", w2: "glow", h2: "ow", e2: "✨", same: false },
+      { w1: "pie", h1: "ie", e1: "🥧", w2: "tie", h2: "ie", e2: "👔", same: true },
+      { w1: "field", h1: "ie", e1: "🌾", w2: "pie", h2: "ie", e2: "🥧", same: false },
+      { w1: "toy", h1: "oy", e1: "🧸", w2: "boy", h2: "oy", e2: "👦", same: true },
+      { w1: "coin", h1: "oi", e1: "🪙", w2: "soil", h2: "oi", e2: "🌱", same: true },
+      { w1: "blue", h1: "ue", e1: "💙", w2: "clue", h2: "ue", e2: "🔍", same: true },
+      { w1: "straw", h1: "aw", e1: "🥤", w2: "claw", h2: "aw", e2: "🦞", same: true },
+      { w1: "said", h1: "ai", e1: "💬", w2: "rain", h2: "ai", e2: "🌧️", same: false },
+      { w1: "some", h1: "o", e1: "🥣", w2: "come", h2: "o", e2: "🏃", same: true },
+      { w1: "bone", h1: "o", e1: "🦴", w2: "one", h2: "o", e2: "1️⃣", same: false },
+      { w1: "there", h1: "ere", e1: "📍", w2: "where", h2: "ere", e2: "❓", same: true },
+      { w1: "were", h1: "ere", e1: "⏳", w2: "there", h2: "ere", e2: "📍", same: false },
+      { w1: "cube", h1: "u_e", e1: "🧊", w2: "tube", h2: "u_e", e2: "🧪", same: true }
+    ];
 
-    const RAW_SENT_DATA = {
-      '3': [
-        { text: "The boat is sailing on the deep blue sea.", correct: "⛵", options: ["⛵", "🚗"] },
-        { text: "Look up at the bright moon shining in the night.", correct: "🌙", options: ["🌙", "☀️"] },
-        { text: "A little moth landed on my red coat.", correct: "🦋", options: ["🦋", "🐸"] },
-        { text: "We sat on the chair and read a big book.", correct: "📖", options: ["📖", "📱"] }
-      ],
-      '4': [
-        { text: "The green frog can jump onto the wooden log.", correct: "🐸", options: ["🦆", "🐸"] },
-        { text: "We sleep in a cozy tent beside the tall tree.", correct: "⛺", options: ["⛺", "🏠"] },
-        { text: "She drinks a glass of fresh cold milk.", correct: "🥛", options: ["🥛", "☕"] },
-        { text: "The red flag is blowing high in the wind.", correct: "🚩", options: ["🚩", "🪧"] }
-      ],
-      '5': [
-        { text: "When I came back again, the seeds had grown into flowers.", correct: "🌸", options: ["🌱", "🌸"] },
-        { text: "I can ride my shiny bike around the park.", correct: "🚲", options: ["🚲", "🛹"] },
-        { text: "A big snake is hiding behind the rock.", correct: "🐍", options: ["🐍", "🐌"] },
-        { text: "We made a sweet cake with berries on top.", correct: "🎂", options: ["🎂", "🥪"] }
-      ],
-      'cew': [
-        { text: "They said that today is a very sunny day.", correct: "☀️", options: ["☀️", "🌧️"] },
-        { text: "My best friend came to visit my new house.", correct: "🏠", options: ["🏠", "🏫"] },
-        { text: "All the happy children love going to school.", correct: "🏫", options: ["🏫", "🏥"] },
-        { text: "Please push the wooden door open with one hand.", correct: "🚪", options: ["🚪", "🪟"] }
-      ]
-    };
+    /* ----------------- 4. SENTENCE MATCH: 30 QUESTIONS ----------------- */
+    const EXPANDED_SENTENCE = [
+      { text: "When I came back again, the seeds had grown into flowers.", correct: "🌸", options: ["🌱", "🌸"] },
+      { text: "The green frog can jump onto the wooden log.", correct: "🐸", options: ["🦆", "🐸"] },
+      { text: "Look up! A bright star is shining in the dark night sky.", correct: "⭐", options: ["⭐", "🌧️"] },
+      { text: "Put on your warm brown coat before you play in the park.", correct: "🧥", options: ["🩳", "🧥"] },
+      { text: "The pirate found a big chest full of shiny gold coins.", correct: "🪙", options: ["🪙", "🐟"] },
+      { text: "We sat by the camp tent and looked up at the moon.", correct: "⛺", options: ["⛺", "🚗"] },
+      { text: "A little bird with blue wings is singing in the tree.", correct: "🐦", options: ["🐦", "🐌"] },
+      { text: "I can bake a sweet cake with lots of red cherries.", correct: "🎂", options: ["🎂", "🥪"] },
+      { text: "The boy is riding his new red bicycle along the road.", correct: "🚲", options: ["🚲", "🛹"] },
+      { text: "A spotted crab is walking sideways along the sandy beach.", correct: "🦀", options: ["🦀", "🐙"] },
+      { text: "The sailboat is sailing fast across the deep blue sea.", correct: "⛵", options: ["⛵", "🚆"] },
+      { text: "Please drink a cup of warm tea from the white cup.", correct: "🍵", options: ["🍵", "🧊"] },
+      { text: "The brown cow is eating sweet green grass in the field.", correct: "🐄", options: ["🐄", "🐖"] },
+      { text: "The cute puppy wags its fluffy tail when it is happy.", correct: "🐕", options: ["🐕", "🐈"] },
+      { text: "The wise old owl sits up high in the hollow oak tree.", correct: "🦉", options: ["🦉", "🦜"] },
+      { text: "The queen wears a shiny golden crown with green jewels.", correct: "👑", options: ["👑", "🧢"] },
+      { text: "She bought a box of hot potato chips for lunch.", correct: "🍟", options: ["🍟", "🥗"] },
+      { text: "The boy plays a big red drum in the school band.", correct: "🥁", options: ["🥁", "🎺"] },
+      { text: "We saw a shiny green snake slithering under the stone.", correct: "🐍", options: ["🐍", "🐛"] },
+      { text: "A colourful paper kite flies very high in the windy sky.", correct: "🪁", options: ["🪁", "🎈"] },
+      { text: "The tiny bird built a soft nest with four small eggs.", correct: "🪺", options: ["🪺", "📦"] },
+      { text: "Turn on the desk lamp when you want to read your book.", correct: "🛋️", options: ["🛋️", "📺"] },
+      { text: "He toasted two slices of bread until they were golden brown.", correct: "🍞", options: ["🍞", "🍎"] },
+      { text: "The happy children walk together with their bags to school.", correct: "🏫", options: ["🏫", "🏥"] },
+      { text: "Please close and lock the wooden door before you leave.", correct: "🚪", options: ["🚪", "🪟"] },
+      { text: "Today is a warm and sunny day with no rain clouds.", correct: "☀️", options: ["☀️", "⛈️"] },
+      { text: "The funny circus clown made all the boys and girls laugh.", correct: "🤡", options: ["🤡", "🧙"] },
+      { text: "He pours a big glass of cold fresh milk to drink.", correct: "🥛", options: ["🥛", "☕"] },
+      { text: "The swimmer dives quickly into the cold blue water pool.", correct: "🏊", options: ["🏊", "🚴"] },
+      { text: "The monkey eats a ripe yellow banana high up in the jungle.", correct: "🐒", options: ["🐒", "🦁"] }
+    ];
 
+    /* ----------------- 5. MOCK SCREENING CHECK: 40 QUESTIONS ----------------- */
     const MOCK_WORDS = [
       { word: "vap", isAlien: true, emoji: "👾" },
       { word: "strop", isAlien: true, emoji: "👽" },
@@ -537,7 +534,6 @@
     let currentPhase = '3';
     let currentGame = 'builder';
 
-    // Active dataset
     let activeBuildList = [];
     let activePicList = [];
     let activeDetList = [];
@@ -550,16 +546,14 @@
     let buildSlots = [];
 
     function setupDatasets() {
+      activePicList = shuffleArray(EXPANDED_PIC_MATCH);
+      activeDetList = shuffleArray(EXPANDED_DETECTIVE);
+      activeSentList = shuffleArray(EXPANDED_SENTENCE);
+
       if (currentPhase === 'mix') {
         activeBuildList = shuffleArray([...RAW_BUILD_LIBRARY['3'], ...RAW_BUILD_LIBRARY['4'], ...RAW_BUILD_LIBRARY['5'], ...RAW_BUILD_LIBRARY['cew']]);
-        activePicList = shuffleArray([...RAW_PIC_DATA['3'], ...RAW_PIC_DATA['4'], ...RAW_PIC_DATA['5'], ...RAW_PIC_DATA['cew']]);
-        activeDetList = shuffleArray([...RAW_DET_DATA['3'], ...RAW_DET_DATA['4'], ...RAW_DET_DATA['5'], ...RAW_DET_DATA['cew']]);
-        activeSentList = shuffleArray([...RAW_SENT_DATA['3'], ...RAW_SENT_DATA['4'], ...RAW_SENT_DATA['5'], ...RAW_SENT_DATA['cew']]);
       } else if (currentPhase !== 'mock') {
         activeBuildList = shuffleArray(RAW_BUILD_LIBRARY[currentPhase] || []);
-        activePicList = shuffleArray(RAW_PIC_DATA[currentPhase] || []);
-        activeDetList = shuffleArray(RAW_DET_DATA[currentPhase] || []);
-        activeSentList = shuffleArray(RAW_SENT_DATA[currentPhase] || []);
       }
       buildIndex = 0;
       picIndex = 0;
@@ -816,7 +810,7 @@
     function renderDetective() {
       if (!activeDetList.length) return;
       const item = activeDetList[detIndex];
-      document.getElementById('detPhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix: Sound Detective" : `Phase ${currentPhase}: Detective`;
+      document.getElementById('detPhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix: Detective" : `Phase ${currentPhase}: Detective`;
       document.getElementById('detectiveCounter').innerText = `${detIndex + 1} / ${activeDetList.length}`;
       document.getElementById('detEmoji1').innerText = item.e1;
       document.getElementById('detEmoji2').innerText = item.e2;
