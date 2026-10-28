@@ -12,8 +12,8 @@
       --secondary-dark: #E58700;
       --correct: #58CC02;
       --wrong: #FF4B4B;
+      --tricky: #E74C3C;
       --bg: #F7F9FA;
-      --card-bg: #FFFFFF;
       --text: #3C3C3C;
     }
 
@@ -24,7 +24,7 @@
     h1 { margin: 2px 0; color: #2C3E50; font-size: 24px; }
     .subtitle { font-size: 13px; color: #7F8C8D; margin: 0; }
 
-    /* Navigation Tabs */
+    /* Tabs */
     .nav-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
     .tab-btn {
       padding: 9px 16px; border: 2px solid var(--primary); background: white;
@@ -45,6 +45,7 @@
       font-size: 13px; font-weight: bold; cursor: pointer; color: #777; box-shadow: 0 2px 0 #DDD;
     }
     .phase-pill.active { border-color: var(--secondary); background: #FFF4E5; color: var(--secondary-dark); box-shadow: 0 2px 0 var(--secondary-dark); }
+    .phase-pill.tricky-pill.active { border-color: var(--tricky); background: #FDEDEC; color: var(--tricky); box-shadow: 0 2px 0 #C0392B; }
 
     .big-btn {
       background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 18px;
@@ -98,11 +99,12 @@
     }
     .target-box.filled { border: 3px solid var(--correct); background: #E8F8F5; color: var(--correct); }
     .target-box.split-filled { border: 3px solid var(--secondary); background: #FFF4E5; color: var(--secondary-dark); }
+    .target-box.tricky-box.filled { border: 3px solid var(--tricky); background: #FDEDEC; color: var(--tricky); }
 
     .sound-button { width: 12px; height: 12px; border-radius: 50%; background: #E67E22; }
     .sound-bar { width: 36px; height: 6px; border-radius: 3px; background: #2980B9; }
+    .tricky-mark { width: 14px; height: 6px; border-radius: 3px; background: var(--tricky); }
 
-    /* Rainbow Smile Arc */
     .split-arc {
       position: absolute;
       top: -12px;
@@ -122,6 +124,7 @@
     }
     .sound-tile:active { transform: translateY(2px); box-shadow: 0 2px 0 #E5E5E5; }
     .sound-tile.split-tile { border-color: var(--secondary); color: var(--secondary-dark); background: #FFF4E5; box-shadow: 0 4px 0 var(--secondary-dark); }
+    .sound-tile.tricky-tile { border-color: var(--tricky); color: var(--tricky); background: #FDEDEC; box-shadow: 0 4px 0 #C0392B; }
     .sound-tile.used { opacity: 0.2; pointer-events: none; box-shadow: none; }
     .status-msg { font-size: 15px; font-weight: bold; min-height: 24px; margin-top: 4px; }
 
@@ -146,7 +149,7 @@
 
   <header>
     <h1>🇬🇧 Year 1 Phonics Academy</h1>
-    <p class="subtitle">UK Letters & Sounds • 120+ Words Library • Screening Check</p>
+    <p class="subtitle">Letters & Sounds • 140+ Words • Screening Check</p>
   </header>
 
   <div class="nav-tabs">
@@ -163,6 +166,7 @@
         <button class="phase-pill active" onclick="setExplorerPhase('3')">Phase 3</button>
         <button class="phase-pill" onclick="setExplorerPhase('4')">Phase 4</button>
         <button class="phase-pill" onclick="setExplorerPhase('5')">Phase 5</button>
+        <button class="phase-pill tricky-pill" onclick="setExplorerPhase('cew')">Tricky Words</button>
       </div>
 
       <div style="font-size: 13px; color: #888; text-align: center;">Tap a sound to hear authentic British Pure Sound:</div>
@@ -182,7 +186,8 @@
       <div class="phase-bar" id="builderPhaseBar">
         <button class="phase-pill active" onclick="setBuilderPhase('3')">Phase 3</button>
         <button class="phase-pill" onclick="setBuilderPhase('4')">Phase 4</button>
-        <button class="phase-pill" onclick="setBuilderPhase('5')">Phase 5 (Split Digraphs)</button>
+        <button class="phase-pill" onclick="setBuilderPhase('5')">Phase 5</button>
+        <button class="phase-pill tricky-pill" onclick="setBuilderPhase('cew')">Tricky Words</button>
       </div>
 
       <div class="game-card">
@@ -243,47 +248,51 @@
   </div>
 
   <script>
-    /* ----------------- AUTHENTIC PHONICS AUDIO ENGINE ----------------- */
-    const PURE_SOUND_AUDIO = {
-      "ch": "https://upload.wikimedia.org/wikipedia/commons/2/29/Voiceless_palato-alveolar_affricate.ogg",
-      "sh": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Voiceless_postalveolar_fricative.ogg",
-      "th": "https://upload.wikimedia.org/wikipedia/commons/8/80/Voiceless_dental_fricative.ogg",
-      "ng": "https://upload.wikimedia.org/wikipedia/commons/3/39/Velar_nasal.ogg",
-      "ai": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Open-mid_front_unrounded_vowel.ogg",
-      "ee": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Close_front_unrounded_vowel.ogg",
-      "igh": "https://upload.wikimedia.org/wikipedia/commons/2/29/PR-open_front_unrounded_vowel.ogg",
-      "oa": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "oo": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Close_back_rounded_vowel.ogg",
-      "ar": "https://upload.wikimedia.org/wikipedia/commons/5/51/Open_back_unrounded_vowel.ogg",
-      "or": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "ur": "https://upload.wikimedia.org/wikipedia/commons/d/de/Mid-central_vowel.ogg",
-      "ow": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Near-open_front_unrounded_vowel.ogg",
-      "oi": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "ear": "https://upload.wikimedia.org/wikipedia/commons/d/de/Mid-central_vowel.ogg",
-      "air": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Open-mid_front_unrounded_vowel.ogg",
-      "ay": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Open-mid_front_unrounded_vowel.ogg",
-      "ou": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Near-open_front_unrounded_vowel.ogg",
-      "ie": "https://upload.wikimedia.org/wikipedia/commons/2/29/PR-open_front_unrounded_vowel.ogg",
-      "ea": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Close_front_unrounded_vowel.ogg",
-      "oy": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "ir": "https://upload.wikimedia.org/wikipedia/commons/d/de/Mid-central_vowel.ogg",
-      "ue": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Close_back_rounded_vowel.ogg",
-      "aw": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "wh": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Voiced_labial-velar_approximant.ogg",
-      "ph": "https://upload.wikimedia.org/wikipedia/commons/5/54/Voiceless_labiodental_fricative.ogg",
-      "ew": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Close_back_rounded_vowel.ogg",
-      "a_e": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Open-mid_front_unrounded_vowel.ogg",
-      "i_e": "https://upload.wikimedia.org/wikipedia/commons/2/29/PR-open_front_unrounded_vowel.ogg",
-      "o_e": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Close-mid_back_rounded_vowel.ogg",
-      "u_e": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Close_back_rounded_vowel.ogg"
+    /* ----------------- RELIABLE DIRECT MP3 SOUND ENGINE ----------------- */
+    // High reliability MP3 CDN for true British Pure Sounds (Never reads whole words or letter names)
+    const PURE_SOUND_MP3 = {
+      "ch": "https://media.freedictionary.com/sound/ipa/mp3/tS.mp3",
+      "sh": "https://media.freedictionary.com/sound/ipa/mp3/S.mp3",
+      "th": "https://media.freedictionary.com/sound/ipa/mp3/T.mp3",
+      "ng": "https://media.freedictionary.com/sound/ipa/mp3/N.mp3",
+      "ai": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
+      "ee": "https://media.freedictionary.com/sound/ipa/mp3/i.mp3",
+      "igh": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
+      "oa": "https://media.freedictionary.com/sound/ipa/mp3/oU.mp3",
+      "oo": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
+      "ar": "https://media.freedictionary.com/sound/ipa/mp3/A.mp3",
+      "or": "https://media.freedictionary.com/sound/ipa/mp3/O.mp3",
+      "ur": "https://media.freedictionary.com/sound/ipa/mp3/3r.mp3",
+      "ow": "https://media.freedictionary.com/sound/ipa/mp3/aU.mp3",
+      "oi": "https://media.freedictionary.com/sound/ipa/mp3/OI.mp3",
+      "ear": "https://media.freedictionary.com/sound/ipa/mp3/Ir.mp3",
+      "air": "https://media.freedictionary.com/sound/ipa/mp3/Er.mp3",
+      "ay": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
+      "ou": "https://media.freedictionary.com/sound/ipa/mp3/aU.mp3",
+      "ie": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
+      "ea": "https://media.freedictionary.com/sound/ipa/mp3/i.mp3",
+      "oy": "https://media.freedictionary.com/sound/ipa/mp3/OI.mp3",
+      "ir": "https://media.freedictionary.com/sound/ipa/mp3/3r.mp3",
+      "ue": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
+      "aw": "https://media.freedictionary.com/sound/ipa/mp3/O.mp3",
+      "wh": "https://media.freedictionary.com/sound/ipa/mp3/w.mp3",
+      "ph": "https://media.freedictionary.com/sound/ipa/mp3/f.mp3",
+      "ew": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
+      "a_e": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
+      "i_e": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
+      "o_e": "https://media.freedictionary.com/sound/ipa/mp3/oU.mp3",
+      "u_e": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3"
     };
 
     let audioPlayer = new Audio();
 
     function playPureSound(p) {
-      if (PURE_SOUND_AUDIO[p]) {
-        audioPlayer.src = PURE_SOUND_AUDIO[p];
-        audioPlayer.play().catch(e => console.log('Audio playback prevented:', e));
+      if (PURE_SOUND_MP3[p]) {
+        audioPlayer.pause();
+        audioPlayer.src = PURE_SOUND_MP3[p];
+        audioPlayer.play().catch(e => console.log('Audio autoplay prevented:', e));
+      } else {
+        speakFullWord(p);
       }
     }
 
@@ -296,7 +305,7 @@
       window.speechSynthesis.speak(utter);
     }
 
-    /* ----------------- DATA DEFINITIONS (EXPANDED TO 120+ WORDS) ----------------- */
+    /* ----------------- DATA DEFINITIONS ----------------- */
     const ALL_SOUNDS = {
       '3': [
         { p: "ch", m: "The train goes ch-ch-ch", ex: ["chip", "chin", "chop"] },
@@ -346,10 +355,19 @@
         { p: "i_e", m: "Nice smile (Split Digraph)", ex: ["kite", "bike", "time"] },
         { p: "o_e", m: "Phone home (Split Digraph)", ex: ["bone", "home", "rope"] },
         { p: "u_e", m: "Huge brute (Split Digraph)", ex: ["cube", "tube", "flute"] }
+      ],
+      'cew': [
+        { p: "said", m: "Tricky 'ai' makes /e/", ex: ["said"] },
+        { p: "one", m: "Sounds just like 'won'", ex: ["one"] },
+        { p: "come", m: "Tricky 'o_e' sound", ex: ["come", "some"] },
+        { p: "house", m: "Quiet 'e' at the end", ex: ["house", "mouse"] },
+        { p: "school", m: "'ch' makes a /k/ sound", ex: ["school"] },
+        { p: "friend", m: "'ie' makes a short /e/ sound", ex: ["friend"] },
+        { p: "were", m: "Tricky vowel spelling", ex: ["were", "there", "where"] }
       ]
     };
 
-    // MASSIVE EXPANDED WORD BANK (120+ words)
+    // RAW 140+ WORDS LIBRARY INCLUDING YEAR 1 TRICKY WORDS
     const RAW_BUILD_LIBRARY = {
       '3': [
         { word: "fish", letterSlots: ["f", "i", "sh"], inputTiles: ["f", "i", "sh"], emoji: "🐟" },
@@ -411,7 +429,6 @@
         { word: "plum", letterSlots: ["p", "l", "u", "m"], inputTiles: ["p", "l", "u", "m"], emoji: "🫐" }
       ],
       '5': [
-        // Split Digraphs
         { word: "cake", letterSlots: ["c", "a", "k", "e"], inputTiles: ["c", "a_e", "k"], splitMap: { tile: "a_e", slots: [1, 3], letters: ["a", "e"] }, emoji: "🎂" },
         { word: "take", letterSlots: ["t", "a", "k", "e"], inputTiles: ["t", "a_e", "k"], splitMap: { tile: "a_e", slots: [1, 3], letters: ["a", "e"] }, emoji: "🤲" },
         { word: "make", letterSlots: ["m", "a", "k", "e"], inputTiles: ["m", "a_e", "k"], splitMap: { tile: "a_e", slots: [1, 3], letters: ["a", "e"] }, emoji: "🔨" },
@@ -426,7 +443,6 @@
         { word: "nose", letterSlots: ["n", "o", "s", "e"], inputTiles: ["n", "o_e", "s"], splitMap: { tile: "o_e", slots: [1, 3], letters: ["o", "e"] }, emoji: "👃" },
         { word: "cube", letterSlots: ["c", "u", "b", "e"], inputTiles: ["c", "u_e", "b"], splitMap: { tile: "u_e", slots: [1, 3], letters: ["u", "e"] }, emoji: "🧊" },
         { word: "tube", letterSlots: ["t", "u", "b", "e"], inputTiles: ["t", "u_e", "b"], splitMap: { tile: "u_e", slots: [1, 3], letters: ["u", "e"] }, emoji: "🧪" },
-        // Phase 5 Vowels & Alternative Spellings
         { word: "day", letterSlots: ["d", "ay"], inputTiles: ["d", "ay"], emoji: "☀️" },
         { word: "play", letterSlots: ["p", "l", "ay"], inputTiles: ["p", "l", "ay"], emoji: "🎮" },
         { word: "tray", letterSlots: ["t", "r", "ay"], inputTiles: ["t", "r", "ay"], emoji: "🍱" },
@@ -443,10 +459,31 @@
         { word: "girl", letterSlots: ["g", "ir", "l"], inputTiles: ["g", "ir", "l"], emoji: "👧" },
         { word: "blue", letterSlots: ["b", "l", "ue"], inputTiles: ["b", "l", "ue"], emoji: "💙" },
         { word: "claw", letterSlots: ["c", "l", "aw"], inputTiles: ["c", "l", "aw"], emoji: "🦞" }
+      ],
+      'cew': [
+        { word: "said", letterSlots: ["s", "a", "i", "d"], inputTiles: ["s", "a", "i", "d"], emoji: "💬" },
+        { word: "the", letterSlots: ["t", "h", "e"], inputTiles: ["t", "h", "e"], emoji: "👉" },
+        { word: "they", letterSlots: ["t", "h", "e", "y"], inputTiles: ["t", "h", "e", "y"], emoji: "👥" },
+        { word: "one", letterSlots: ["o", "n", "e"], inputTiles: ["o", "n", "e"], emoji: "1️⃣" },
+        { word: "come", letterSlots: ["c", "o", "m", "e"], inputTiles: ["c", "o", "m", "e"], emoji: "🏃" },
+        { word: "some", letterSlots: ["s", "o", "m", "e"], inputTiles: ["s", "o", "m", "e"], emoji: "🥣" },
+        { word: "house", letterSlots: ["h", "o", "u", "s", "e"], inputTiles: ["h", "o", "u", "s", "e"], emoji: "🏠" },
+        { word: "school", letterSlots: ["s", "c", "h", "o", "o", "l"], inputTiles: ["s", "c", "h", "o", "o", "l"], emoji: "🏫" },
+        { word: "friend", letterSlots: ["f", "r", "i", "e", "n", "d"], inputTiles: ["f", "r", "i", "e", "n", "d"], emoji: "🤝" },
+        { word: "today", letterSlots: ["t", "o", "d", "a", "y"], inputTiles: ["t", "o", "d", "a", "y"], emoji: "📅" },
+        { word: "love", letterSlots: ["l", "o", "v", "e"], inputTiles: ["l", "o", "v", "e"], emoji: "❤️" },
+        { word: "were", letterSlots: ["w", "e", "r", "e"], inputTiles: ["w", "e", "r", "e"], emoji: "⏳" },
+        { word: "there", letterSlots: ["t", "h", "e", "r", "e"], inputTiles: ["t", "h", "e", "r", "e"], emoji: "📍" },
+        { word: "where", letterSlots: ["w", "h", "e", "r", "e"], inputTiles: ["w", "h", "e", "r", "e"], emoji: "❓" },
+        { word: "once", letterSlots: ["o", "n", "c", "e"], inputTiles: ["o", "n", "c", "e"], emoji: "📖" },
+        { word: "our", letterSlots: ["o", "u", "r"], inputTiles: ["o", "u", "r"], emoji: "🏡" },
+        { word: "your", letterSlots: ["y", "o", "u", "r"], inputTiles: ["y", "o", "u", "r"], emoji: "🎁" },
+        { word: "here", letterSlots: ["h", "e", "r", "e"], inputTiles: ["h", "e", "r", "e"], emoji: "👇" },
+        { word: "push", letterSlots: ["p", "u", "s", "h"], inputTiles: ["p", "u", "s", "h"], emoji: "🚪" },
+        { word: "pull", letterSlots: ["p", "u", "l", "l"], inputTiles: ["p", "u", "l", "l"], emoji: "🧲" }
       ]
     };
 
-    // Auto-shuffle word lists so children never get the same sequence
     function shuffleArray(arr) {
       return [...arr].sort(() => Math.random() - 0.5);
     }
@@ -454,7 +491,8 @@
     let BUILD_LIBRARY = {
       '3': shuffleArray(RAW_BUILD_LIBRARY['3']),
       '4': shuffleArray(RAW_BUILD_LIBRARY['4']),
-      '5': shuffleArray(RAW_BUILD_LIBRARY['5'])
+      '5': shuffleArray(RAW_BUILD_LIBRARY['5']),
+      'cew': shuffleArray(RAW_BUILD_LIBRARY['cew'])
     };
 
     const MOCK_WORDS = [
@@ -516,7 +554,7 @@
     function setExplorerPhase(phase) {
       currentExplorerPhase = phase;
       currentSoundIndex = 0;
-      const keys = ['3', '4', '5'];
+      const keys = ['3', '4', '5', 'cew'];
       document.querySelectorAll('#explorerPhaseBar .phase-pill').forEach((btn, i) => {
         btn.classList.toggle('active', keys[i] === phase);
       });
@@ -571,8 +609,8 @@
     function setBuilderPhase(phase) {
       currentBuildPhase = phase;
       buildIndex = 0;
-      BUILD_LIBRARY[phase] = shuffleArray(RAW_BUILD_LIBRARY[phase]); // Re-shuffle on change!
-      const keys = ['3', '4', '5'];
+      BUILD_LIBRARY[phase] = shuffleArray(RAW_BUILD_LIBRARY[phase]);
+      const keys = ['3', '4', '5', 'cew'];
       document.querySelectorAll('#builderPhaseBar .phase-pill').forEach((btn, i) => {
         btn.classList.toggle('active', keys[i] === phase);
       });
@@ -582,8 +620,9 @@
     function renderBuilder() {
       const list = BUILD_LIBRARY[currentBuildPhase];
       const data = list[buildIndex];
+      const isCEW = (currentBuildPhase === 'cew');
 
-      document.getElementById('buildPhaseTag').innerText = `Phase ${currentBuildPhase}`;
+      document.getElementById('buildPhaseTag').innerText = isCEW ? "🔴 Tricky Word" : `Phase ${currentBuildPhase}`;
       document.getElementById('buildCounterTag').innerText = `${buildIndex + 1} / ${list.length}`;
       document.getElementById('buildImage').innerText = data.emoji;
       document.getElementById('buildStatus').innerText = "";
@@ -597,12 +636,16 @@
         wrap.className = 'box-column';
 
         const box = document.createElement('div');
-        box.className = 'target-box';
+        box.className = `target-box ${isCEW ? 'tricky-box' : ''}`;
         box.id = `bslot-${idx}`;
         box.onclick = () => removeBuildSlot(idx);
 
         const indicator = document.createElement('div');
-        indicator.className = (slotLetter.length > 1) ? 'sound-bar' : 'sound-button';
+        if (isCEW) {
+          indicator.className = 'tricky-mark';
+        } else {
+          indicator.className = (slotLetter.length > 1) ? 'sound-bar' : 'sound-button';
+        }
 
         wrap.appendChild(box);
         wrap.appendChild(indicator);
@@ -624,7 +667,10 @@
       }
 
       // Generate Options Bank
-      const distractors = ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai', 'k', 'n'];
+      const distractors = isCEW 
+        ? ['a', 'e', 'i', 'o', 'u', 's', 't'] 
+        : ['s', 't', 'p', 'ee', 'ch', 'm', 'oa', 'ai', 'k', 'n'];
+
       const tiles = [...data.inputTiles];
       while (tiles.length < data.inputTiles.length + 3) {
         const rand = distractors[Math.floor(Math.random() * distractors.length)];
@@ -636,7 +682,7 @@
       bank.innerHTML = '';
       tiles.forEach(t => {
         const tile = document.createElement('div');
-        tile.className = `sound-tile ${t.includes('_') ? 'split-tile' : ''}`;
+        tile.className = `sound-tile ${t.includes('_') ? 'split-tile' : ''} ${isCEW ? 'tricky-tile' : ''}`;
         tile.innerText = t;
         tile.onclick = () => pickTileItem(t, tile);
         bank.appendChild(tile);
