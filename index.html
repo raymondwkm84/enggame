@@ -48,7 +48,7 @@
     .phase-pill.tricky-pill.active { border-color: var(--tricky); background: #FDEDEC; color: var(--tricky); box-shadow: 0 2px 0 #C0392B; }
 
     .big-btn {
-      background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 18px;
+      background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 20px;
       font-size: 15px; font-weight: bold; cursor: pointer; color: var(--secondary-dark);
       box-shadow: 0 3px 0 var(--secondary-dark); display: inline-flex; align-items: center; gap: 6px;
     }
@@ -149,7 +149,7 @@
 
   <header>
     <h1>🇬🇧 Year 1 Phonics Academy</h1>
-    <p class="subtitle">Letters & Sounds • 140+ Words • Screening Check</p>
+    <p class="subtitle">Letters & Sounds • Pure Sounds • Screening Check</p>
   </header>
 
   <div class="nav-tabs">
@@ -169,14 +169,13 @@
         <button class="phase-pill tricky-pill" onclick="setExplorerPhase('cew')">Tricky Words</button>
       </div>
 
-      <div style="font-size: 13px; color: #888; text-align: center;">Tap a sound to hear authentic British Pure Sound:</div>
+      <div style="font-size: 13px; color: #888; text-align: center;">Tap a sound to view the UK classroom catchphrase:</div>
       <div class="sound-grid" id="soundGrid"></div>
 
       <div class="lesson-box" id="lessonBox">
         <div class="lesson-title" id="lessonPhoneme">ch</div>
         <div class="mnemonic" id="lessonMnemonic">"The train goes ch-ch-ch"</div>
-        <button class="big-btn" onclick="playCurrentExplorerSound()">🔊 Hear Pure Sound</button>
-        <div style="margin-top: 12px; font-size: 13px; color: #666;">Words with this sound:</div>
+        <div style="margin-top: 8px; font-size: 13px; color: #666;">Example words (Tap to hear the full word):</div>
         <div class="word-examples" id="lessonExamples"></div>
       </div>
     </div>
@@ -199,8 +198,7 @@
         <div id="buildImage" class="image-clue">🐟</div>
 
         <div class="audio-bar">
-          <button class="big-btn" onclick="sayBuildWord()">🔊 Say Word</button>
-          <button class="big-btn" onclick="soundOutBuildWord()">🔤 Sound It Out</button>
+          <button class="big-btn" onclick="sayBuildWord()">🔊 Say Whole Word</button>
         </div>
 
         <div class="frame-container">
@@ -248,60 +246,15 @@
   </div>
 
   <script>
-    /* ----------------- RELIABLE DIRECT MP3 SOUND ENGINE ----------------- */
-    // High reliability MP3 CDN for true British Pure Sounds (Never reads whole words or letter names)
-    const PURE_SOUND_MP3 = {
-      "ch": "https://media.freedictionary.com/sound/ipa/mp3/tS.mp3",
-      "sh": "https://media.freedictionary.com/sound/ipa/mp3/S.mp3",
-      "th": "https://media.freedictionary.com/sound/ipa/mp3/T.mp3",
-      "ng": "https://media.freedictionary.com/sound/ipa/mp3/N.mp3",
-      "ai": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
-      "ee": "https://media.freedictionary.com/sound/ipa/mp3/i.mp3",
-      "igh": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
-      "oa": "https://media.freedictionary.com/sound/ipa/mp3/oU.mp3",
-      "oo": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
-      "ar": "https://media.freedictionary.com/sound/ipa/mp3/A.mp3",
-      "or": "https://media.freedictionary.com/sound/ipa/mp3/O.mp3",
-      "ur": "https://media.freedictionary.com/sound/ipa/mp3/3r.mp3",
-      "ow": "https://media.freedictionary.com/sound/ipa/mp3/aU.mp3",
-      "oi": "https://media.freedictionary.com/sound/ipa/mp3/OI.mp3",
-      "ear": "https://media.freedictionary.com/sound/ipa/mp3/Ir.mp3",
-      "air": "https://media.freedictionary.com/sound/ipa/mp3/Er.mp3",
-      "ay": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
-      "ou": "https://media.freedictionary.com/sound/ipa/mp3/aU.mp3",
-      "ie": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
-      "ea": "https://media.freedictionary.com/sound/ipa/mp3/i.mp3",
-      "oy": "https://media.freedictionary.com/sound/ipa/mp3/OI.mp3",
-      "ir": "https://media.freedictionary.com/sound/ipa/mp3/3r.mp3",
-      "ue": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
-      "aw": "https://media.freedictionary.com/sound/ipa/mp3/O.mp3",
-      "wh": "https://media.freedictionary.com/sound/ipa/mp3/w.mp3",
-      "ph": "https://media.freedictionary.com/sound/ipa/mp3/f.mp3",
-      "ew": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3",
-      "a_e": "https://media.freedictionary.com/sound/ipa/mp3/eI.mp3",
-      "i_e": "https://media.freedictionary.com/sound/ipa/mp3/aI.mp3",
-      "o_e": "https://media.freedictionary.com/sound/ipa/mp3/oU.mp3",
-      "u_e": "https://media.freedictionary.com/sound/ipa/mp3/u.mp3"
-    };
-
-    let audioPlayer = new Audio();
-
-    function playPureSound(p) {
-      if (PURE_SOUND_MP3[p]) {
-        audioPlayer.pause();
-        audioPlayer.src = PURE_SOUND_MP3[p];
-        audioPlayer.play().catch(e => console.log('Audio autoplay prevented:', e));
-      } else {
-        speakFullWord(p);
-      }
-    }
-
+    /* ----------------- CLEAN FULL-WORD SPEECH SYNTHESIS ----------------- */
+    // Only pronounces real, complete English words.
+    // Isolated individual sounds are muted completely so no incorrect pronunciation can occur.
     function speakFullWord(word) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance(word);
       utter.lang = 'en-GB';
-      utter.rate = 0.85;
+      utter.rate = 0.82;
       window.speechSynthesis.speak(utter);
     }
 
@@ -367,7 +320,6 @@
       ]
     };
 
-    // RAW 140+ WORDS LIBRARY INCLUDING YEAR 1 TRICKY WORDS
     const RAW_BUILD_LIBRARY = {
       '3': [
         { word: "fish", letterSlots: ["f", "i", "sh"], inputTiles: ["f", "i", "sh"], emoji: "🐟" },
@@ -573,7 +525,6 @@
         card.onclick = () => {
           currentSoundIndex = idx;
           renderSoundExplorer();
-          playPureSound(item.p);
         };
         grid.appendChild(card);
       });
@@ -594,11 +545,6 @@
         chip.onclick = () => speakFullWord(word);
         exWrap.appendChild(chip);
       });
-    }
-
-    function playCurrentExplorerSound() {
-      const p = ALL_SOUNDS[currentExplorerPhase][currentSoundIndex].p;
-      playPureSound(p);
     }
 
     /* ----------------- MODE 2: PHONICS BUILDER ----------------- */
@@ -705,7 +651,6 @@
         box1.innerText = l1; box1.classList.add('split-filled');
         box2.innerText = l2; box2.classList.add('split-filled');
 
-        playPureSound(tileValue);
         checkBuildAnswer();
         return;
       }
@@ -720,7 +665,6 @@
       box.innerText = tileValue;
       box.classList.add('filled');
 
-      playPureSound(tileValue);
       checkBuildAnswer();
     }
 
@@ -792,15 +736,6 @@
 
     function sayBuildWord() {
       speakFullWord(BUILD_LIBRARY[currentBuildPhase][buildIndex].word);
-    }
-
-    function soundOutBuildWord() {
-      const data = BUILD_LIBRARY[currentBuildPhase][buildIndex];
-      let delay = 0;
-      data.inputTiles.forEach((t) => {
-        setTimeout(() => playPureSound(t), delay);
-        delay += 650;
-      });
     }
 
     /* ----------------- MODE 3: MOCK SCREENING CHECK ----------------- */
