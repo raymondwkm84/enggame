@@ -13,7 +13,7 @@
       --correct: #58CC02;
       --wrong: #FF4B4B;
       --tricky: #E74C3C;
-      --link: #8E44AD;
+      --yt-red: #CC0000;
       --bg: #F7F9FA;
       --text: #3C3C3C;
     }
@@ -56,12 +56,13 @@
     }
     .big-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--secondary-dark); }
 
-    .audio-link-btn {
-      background: #F4ECF7; border: 2px solid var(--link); border-radius: 14px; padding: 10px 18px;
-      font-size: 14px; font-weight: bold; color: var(--link); text-decoration: none;
-      box-shadow: 0 3px 0 var(--link); display: inline-flex; align-items: center; gap: 8px; margin: 8px 0;
+    /* YouTube / BBC Official Link Button */
+    .video-link-btn {
+      background: #FDEDEC; border: 2px solid var(--yt-red); border-radius: 14px; padding: 10px 18px;
+      font-size: 14px; font-weight: bold; color: var(--yt-red); text-decoration: none;
+      box-shadow: 0 3px 0 var(--yt-red); display: inline-flex; align-items: center; gap: 8px; margin: 8px 0;
     }
-    .audio-link-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--link); }
+    .video-link-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--yt-red); }
 
     /* --- MODE 1: Sound Explorer --- */
     .sound-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
@@ -158,7 +159,7 @@
 
   <header>
     <h1>🇬🇧 Year 1 Phonics Academy</h1>
-    <p class="subtitle">UK Curriculum • Official Audio Links • Screening Check</p>
+    <p class="subtitle">UK Letters & Sounds • Official Video Links • Screening Check</p>
   </header>
 
   <div class="nav-tabs">
@@ -178,16 +179,16 @@
         <button class="phase-pill tricky-pill" onclick="setExplorerPhase('cew')">Tricky Words</button>
       </div>
 
-      <div style="font-size: 13px; color: #888; text-align: center;">Tap a sound to view catchphrase & official pure sound:</div>
+      <div style="font-size: 13px; color: #888; text-align: center;">Tap a sound to view catchphrase & official video guide:</div>
       <div class="sound-grid" id="soundGrid"></div>
 
       <div class="lesson-box" id="lessonBox">
         <div class="lesson-title" id="lessonPhoneme">ch</div>
         <div class="mnemonic" id="lessonMnemonic">"The train goes ch-ch-ch"</div>
         
-        <!-- Official Audio External Link -->
-        <a id="lessonLink" class="audio-link-btn" href="https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" target="_blank">
-          🔊 Listen to Pure Sound on Oxford Owl ↗
+        <!-- Direct Official Video Link -->
+        <a id="lessonLink" class="video-link-btn" href="#" target="_blank">
+          ▶️ Watch 'ch' Pure Sound on BBC / YouTube ↗
         </a>
 
         <div style="margin-top: 10px; font-size: 13px; color: #666;">Example words (Tap to hear the full word):</div>
@@ -271,65 +272,65 @@
       window.speechSynthesis.speak(utter);
     }
 
-    /* ----------------- DATA DEFINITIONS WITH DIRECT LINKS ----------------- */
+    /* ----------------- DATA DEFINITIONS ----------------- */
     const ALL_SOUNDS = {
       '3': [
-        { p: "ch", m: "The train goes ch-ch-ch", ex: ["chip", "chin", "chop"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "sh", m: "Says sh to the noisy children", ex: ["fish", "ship", "shop"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "th", m: "Princess and the horse (th)", ex: ["moth", "thin", "thick"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ng", m: "Thing on a string", ex: ["ring", "king", "song"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ai", m: "Snail in the rain", ex: ["rain", "tail", "wait"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ee", m: "What can you see?", ex: ["feet", "tree", "meet"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "igh", m: "Fly high in the sky", ex: ["night", "light", "high"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "oa", m: "Goat in a boat", ex: ["boat", "coat", "road"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "oo", m: "Look at a book / Zoo", ex: ["moon", "book", "spoon"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ar", m: "Start the car", ex: ["car", "star", "park"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "or", m: "Shut the door", ex: ["fork", "horn", "born"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ur", m: "Nurse with a purse", ex: ["surf", "burn", "turn"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ow", m: "Brown cow", ex: ["cow", "owl", "town"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "oi", m: "Spoil the boy", ex: ["coin", "soil", "join"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ear", m: "Hear with your ear", ex: ["hear", "tear", "beard"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "air", m: "That's not fair!", ex: ["chair", "hair", "stair"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" }
+        { p: "ch", m: "The train goes ch-ch-ch", ex: ["chip", "chin", "chop"] },
+        { p: "sh", m: "Says sh to the noisy children", ex: ["fish", "ship", "shop"] },
+        { p: "th", m: "Princess and the horse (th)", ex: ["moth", "thin", "thick"] },
+        { p: "ng", m: "Thing on a string", ex: ["ring", "king", "song"] },
+        { p: "ai", m: "Snail in the rain", ex: ["rain", "tail", "wait"] },
+        { p: "ee", m: "What can you see?", ex: ["feet", "tree", "meet"] },
+        { p: "igh", m: "Fly high in the sky", ex: ["night", "light", "high"] },
+        { p: "oa", m: "Goat in a boat", ex: ["boat", "coat", "road"] },
+        { p: "oo", m: "Look at a book / Zoo", ex: ["moon", "book", "spoon"] },
+        { p: "ar", m: "Start the car", ex: ["car", "star", "park"] },
+        { p: "or", m: "Shut the door", ex: ["fork", "horn", "born"] },
+        { p: "ur", m: "Nurse with a purse", ex: ["surf", "burn", "turn"] },
+        { p: "ow", m: "Brown cow", ex: ["cow", "owl", "town"] },
+        { p: "oi", m: "Spoil the boy", ex: ["coin", "soil", "join"] },
+        { p: "ear", m: "Hear with your ear", ex: ["hear", "tear", "beard"] },
+        { p: "air", m: "That's not fair!", ex: ["chair", "hair", "stair"] }
       ],
       '4': [
-        { p: "st", m: "Stop at the post", ex: ["nest", "stop", "step"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "cr", m: "Crawling crab", ex: ["crab", "crisp", "crop"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "fr", m: "Frog on a log", ex: ["frog", "from", "fresh"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "cl", m: "Clap your hands", ex: ["clip", "clap", "clown"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "dr", m: "Drum and drop", ex: ["drum", "drop", "drag"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "fl", m: "Flag in the wind", ex: ["flag", "flip", "flat"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "gl", m: "Glow in the dark", ex: ["glad", "glow", "glass"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "pl", m: "Plug it in", ex: ["plug", "plum", "plan"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "mp", m: "Jump over the lamp", ex: ["lamp", "jump", "camp"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "nd", m: "Sand on the hand", ex: ["hand", "pond", "sand"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "nt", m: "Tent in the woods", ex: ["tent", "hunt", "bent"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "lk", m: "Drink cold milk", ex: ["milk", "silk", "bulk"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" }
+        { p: "st", m: "Stop at the post", ex: ["nest", "stop", "step"] },
+        { p: "cr", m: "Crawling crab", ex: ["crab", "crisp", "crop"] },
+        { p: "fr", m: "Frog on a log", ex: ["frog", "from", "fresh"] },
+        { p: "cl", m: "Clap your hands", ex: ["clip", "clap", "clown"] },
+        { p: "dr", m: "Drum and drop", ex: ["drum", "drop", "drag"] },
+        { p: "fl", m: "Flag in the wind", ex: ["flag", "flip", "flat"] },
+        { p: "gl", m: "Glow in the dark", ex: ["glad", "glow", "glass"] },
+        { p: "pl", m: "Plug it in", ex: ["plug", "plum", "plan"] },
+        { p: "mp", m: "Jump over the lamp", ex: ["lamp", "jump", "camp"] },
+        { p: "nd", m: "Sand on the hand", ex: ["hand", "pond", "sand"] },
+        { p: "nt", m: "Tent in the woods", ex: ["tent", "hunt", "bent"] },
+        { p: "lk", m: "Drink cold milk", ex: ["milk", "silk", "bulk"] }
       ],
       '5': [
-        { p: "ay", m: "May I play?", ex: ["day", "play", "tray"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ou", m: "Shout it out!", ex: ["cloud", "shout", "mouth"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ie", m: "Tie your tie", ex: ["pie", "tie", "lie"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ea", m: "Cup of tea", ex: ["meat", "leaf", "sea"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "oy", m: "Toy for a boy", ex: ["boy", "toy", "joy"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ir", m: "Whirl and twirl", ex: ["bird", "girl", "shirt"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ue", m: "Blue clue", ex: ["blue", "clue", "glue"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "aw", m: "Yawn at dawn", ex: ["saw", "claw", "straw"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "wh", m: "Whistle while you work", ex: ["whale", "wheel", "white"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ph", m: "Dolphin on the phone", ex: ["phone", "photo", "dolphin"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "ew", m: "Chew the stew", ex: ["screw", "chew", "flew"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "a_e", m: "Make a cake (Split Digraph)", ex: ["cake", "take", "snake"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "i_e", m: "Nice smile (Split Digraph)", ex: ["kite", "bike", "time"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "o_e", m: "Phone home (Split Digraph)", ex: ["bone", "home", "rope"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" },
-        { p: "u_e", m: "Huge brute (Split Digraph)", ex: ["cube", "tube", "flute"], url: "https://home.oxfordowl.co.uk/reading/reading-schemes-oxford-levels/read-write-inc-phonics-guide/" }
+        { p: "ay", m: "May I play?", ex: ["day", "play", "tray"] },
+        { p: "ou", m: "Shout it out!", ex: ["cloud", "shout", "mouth"] },
+        { p: "ie", m: "Tie your tie", ex: ["pie", "tie", "lie"] },
+        { p: "ea", m: "Cup of tea", ex: ["meat", "leaf", "sea"] },
+        { p: "oy", m: "Toy for a boy", ex: ["boy", "toy", "joy"] },
+        { p: "ir", m: "Whirl and twirl", ex: ["bird", "girl", "shirt"] },
+        { p: "ue", m: "Blue clue", ex: ["blue", "clue", "glue"] },
+        { p: "aw", m: "Yawn at dawn", ex: ["saw", "claw", "straw"] },
+        { p: "wh", m: "Whistle while you work", ex: ["whale", "wheel", "white"] },
+        { p: "ph", m: "Dolphin on the phone", ex: ["phone", "photo", "dolphin"] },
+        { p: "ew", m: "Chew the stew", ex: ["screw", "chew", "flew"] },
+        { p: "a_e", m: "Make a cake (Split Digraph)", ex: ["cake", "take", "snake"] },
+        { p: "i_e", m: "Nice smile (Split Digraph)", ex: ["kite", "bike", "time"] },
+        { p: "o_e", m: "Phone home (Split Digraph)", ex: ["bone", "home", "rope"] },
+        { p: "u_e", m: "Huge brute (Split Digraph)", ex: ["cube", "tube", "flute"] }
       ],
       'cew': [
-        { p: "said", m: "Tricky 'ai' makes /e/", ex: ["said"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "one", m: "Sounds just like 'won'", ex: ["one"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "come", m: "Tricky 'o_e' sound", ex: ["come", "some"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "house", m: "Quiet 'e' at the end", ex: ["house", "mouse"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "school", m: "'ch' makes a /k/ sound", ex: ["school"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "friend", m: "'ie' makes a short /e/ sound", ex: ["friend"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" },
-        { p: "were", m: "Tricky vowel spelling", ex: ["were", "there", "where"], url: "https://www.bbc.co.uk/bitesize/topics/zvq9bdm" }
+        { p: "said", m: "Tricky 'ai' makes /e/", ex: ["said"] },
+        { p: "one", m: "Sounds just like 'won'", ex: ["one"] },
+        { p: "come", m: "Tricky 'o_e' sound", ex: ["come", "some"] },
+        { p: "house", m: "Quiet 'e' at the end", ex: ["house", "mouse"] },
+        { p: "school", m: "'ch' makes a /k/ sound", ex: ["school"] },
+        { p: "friend", m: "'ie' makes a short /e/ sound", ex: ["friend"] },
+        { p: "were", m: "Tricky vowel spelling", ex: ["were", "there", "where"] }
       ]
     };
 
@@ -549,10 +550,11 @@
       document.getElementById('lessonPhoneme').innerText = item.p;
       document.getElementById('lessonMnemonic').innerText = `"${item.m}"`;
 
-      // Update link
+      // Generate direct, fail-safe search link for BBC / Official YouTube phonics guides
       const linkBtn = document.getElementById('lessonLink');
-      linkBtn.href = item.url;
-      linkBtn.innerText = `🔊 Listen to '${item.p}' on Oxford Owl / BBC ↗`;
+      const searchQuery = encodeURIComponent(`BBC Bitesize Phonics ${item.p} sound`);
+      linkBtn.href = `https://www.youtube.com/results?search_query=${searchQuery}`;
+      linkBtn.innerText = `▶️ Watch '${item.p}' Pure Sound on BBC / YouTube ↗`;
 
       const exWrap = document.getElementById('lessonExamples');
       exWrap.innerHTML = '';
