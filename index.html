@@ -49,8 +49,8 @@
     .container { width: 100%; max-width: 540px; }
     .card { background: white; border-radius: 20px; padding: 18px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center; }
 
-    .tracker { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: #94A3B8; margin-bottom: 6px; }
-    .image-clue { font-size: 68px; margin: 4px 0; line-height: 1.1; user-select: none; }
+    .tracker { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; color: #64748B; margin-bottom: 8px; }
+    .image-clue { font-size: 72px; margin: 4px 0; line-height: 1.1; user-select: none; }
 
     .big-btn {
       background: #FFF4E5; border: 2px solid var(--secondary); border-radius: 14px; padding: 10px 18px;
@@ -114,6 +114,10 @@
     .detective-word { font-size: 26px; font-weight: bold; color: #2D3748; margin-top: 4px; }
     .detective-word span { color: var(--primary); text-decoration: underline; }
 
+    /* Star Result Card */
+    .result-box { display: none; padding: 20px 10px; }
+    .stars-banner { font-size: 42px; margin: 10px 0; letter-spacing: 4px; }
+
     /* Mock Screening Check */
     .mock-card {
       margin: 14px auto; padding: 20px; border: 3px solid #E5E5E5; border-radius: 18px;
@@ -133,7 +137,7 @@
 
   <header>
     <h1>🇬🇧 UK Year 1 Phonics Academy</h1>
-    <p class="subtitle">Complete Curriculum • 30+ Questions Per Mode • Mega Mix</p>
+    <p class="subtitle">Quick 5-Question Workouts • CGP Style Star Rewards</p>
   </header>
 
   <!-- 1. TOP LEVEL PHASE NAVIGATION -->
@@ -149,84 +153,110 @@
   <!-- 2. SUB LEVEL GAME NAVIGATION -->
   <div class="game-nav" id="subGameNav">
     <button class="game-tab active" onclick="selectGame('builder')">🧩 Builder</button>
-    <button class="game-tab" onclick="selectGame('picmatch')">🖼️ Picture Match (30)</button>
-    <button class="game-tab" onclick="selectGame('detective')">🕵️ Sound Detective (30)</button>
-    <button class="game-tab" onclick="selectGame('sentence')">📖 Sentence Match (30)</button>
+    <button class="game-tab" onclick="selectGame('picmatch')">🖼️ Picture Match</button>
+    <button class="game-tab" onclick="selectGame('detective')">🕵️ Sound Detective</button>
+    <button class="game-tab" onclick="selectGame('sentence')">📖 Sentence Match</button>
   </div>
 
   <div class="container">
     
     <!-- GAME 1: PHONICS BUILDER -->
     <div id="game-builder" class="card">
-      <div class="tracker">
-        <span id="buildPhaseTag">Phase 3</span>
-        <span id="buildCounterTag">1 / 30</span>
+      <div id="builderPlayBox">
+        <div class="tracker">
+          <span id="buildPhaseTag">Phase 3</span>
+          <span id="buildCounterTag">Workout: 1 / 5</span>
+        </div>
+        <div id="buildImage" class="image-clue">🐟</div>
+        <div style="margin: 8px 0 12px;">
+          <button class="big-btn" onclick="sayBuildWord()">🔊 Say Whole Word</button>
+        </div>
+        <div class="frame-container">
+          <div id="splitArc" class="split-arc"></div>
+          <div class="boxes-row" id="buildFrame"></div>
+        </div>
+        <div class="tile-bank" id="buildBank"></div>
+        <div id="buildStatus" class="status-msg"></div>
       </div>
-      <div id="buildImage" class="image-clue">🐟</div>
-      <div style="margin: 8px 0 12px;">
-        <button class="big-btn" onclick="sayBuildWord()">🔊 Say Whole Word</button>
-      </div>
-      <div class="frame-container">
-        <div id="splitArc" class="split-arc"></div>
-        <div class="boxes-row" id="buildFrame"></div>
-      </div>
-      <div class="tile-bank" id="buildBank"></div>
-      <div id="buildStatus" class="status-msg"></div>
-      <div style="margin-top: 12px; display: flex; justify-content: center; gap: 10px;">
-        <button class="big-btn" style="background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="prevBuildWord()">⬅️ Prev</button>
-        <button class="big-btn" style="background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="nextBuildWord()">Next ➡️</button>
+      <div id="builderResultBox" class="result-box">
+        <h2>🎉 Brilliant Job!</h2>
+        <div class="stars-banner">⭐⭐⭐⭐⭐</div>
+        <p style="font-size: 16px; color: #555;">You finished this 5-word workout!</p>
+        <button class="big-btn" onclick="startWorkout('builder')">🔄 Play 5 New Words</button>
       </div>
     </div>
 
     <!-- GAME 2: PICTURE MATCH -->
     <div id="game-picmatch" class="card" style="display: none;">
-      <div class="tracker">
-        <span id="picPhaseTag">Phase 3</span>
-        <span id="picCounter">1 / 30</span>
+      <div id="picPlayBox">
+        <div class="tracker">
+          <span id="picPhaseTag">Picture Match</span>
+          <span id="picCounter">Workout: 1 / 5</span>
+        </div>
+        <div id="picClue" class="image-clue">🍟</div>
+        <div class="choice-grid" id="picChoices"></div>
+        <div id="picStatus" class="status-msg"></div>
       </div>
-      <div id="picClue" class="image-clue">🍟</div>
-      <div class="choice-grid" id="picChoices"></div>
-      <div id="picStatus" class="status-msg"></div>
-      <button class="big-btn" style="margin-top: 10px; background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="nextPicQuestion()">Next ➡️</button>
+      <div id="picResultBox" class="result-box">
+        <h2>🎉 Workout Complete!</h2>
+        <div class="stars-banner">⭐⭐⭐⭐⭐</div>
+        <p style="font-size: 16px; color: #555;">5 out of 5 words correctly matched!</p>
+        <button class="big-btn" onclick="startWorkout('picmatch')">🔄 Play Another 5</button>
+      </div>
     </div>
 
     <!-- GAME 3: SOUND DETECTIVE -->
     <div id="game-detective" class="card" style="display: none;">
-      <div class="tracker">
-        <span id="detPhaseTag">Sound Detective</span>
-        <span id="detectiveCounter">1 / 30</span>
-      </div>
-      <p style="font-size: 14px; color: #555; margin: 8px 0;">Do the highlighted letters make the <b>SAME</b> sound in both words?</p>
-      <div class="detective-box">
-        <div style="text-align: center;">
-          <div id="detEmoji1" style="font-size: 40px;">🛋️</div>
-          <div id="detWord1" class="detective-word">pill<span>ow</span></div>
+      <div id="detPlayBox">
+        <div class="tracker">
+          <span id="detPhaseTag">Sound Detective</span>
+          <span id="detectiveCounter">Workout: 1 / 5</span>
         </div>
-        <div style="font-size: 22px; font-weight: bold; color: #CBD5E1;">VS</div>
-        <div style="text-align: center;">
-          <div id="detEmoji2" style="font-size: 40px;">🐄</div>
-          <div id="detWord2" class="detective-word">c<span>ow</span></div>
+        <p style="font-size: 14px; color: #555; margin: 8px 0;">Do the highlighted letters make the <b>SAME</b> sound in both words?</p>
+        <div class="detective-box">
+          <div style="text-align: center;">
+            <div id="detEmoji1" style="font-size: 40px;">🛋️</div>
+            <div id="detWord1" class="detective-word">pill<span>ow</span></div>
+          </div>
+          <div style="font-size: 22px; font-weight: bold; color: #CBD5E1;">VS</div>
+          <div style="text-align: center;">
+            <div id="detEmoji2" style="font-size: 40px;">🐄</div>
+            <div id="detWord2" class="detective-word">c<span>ow</span></div>
+          </div>
         </div>
+        <button class="big-btn" style="margin-bottom: 12px;" onclick="speakDetectiveWords()">🔊 Hear Both Words</button>
+        <div class="choice-grid" style="grid-template-columns: 1fr 1fr; max-width: 320px; margin: 0 auto;">
+          <button class="choice-card" onclick="answerDetective(true)">✅ Yes, Same</button>
+          <button class="choice-card" onclick="answerDetective(false)">❌ No, Different</button>
+        </div>
+        <div id="detStatus" class="status-msg" style="margin-top: 10px;"></div>
       </div>
-      <button class="big-btn" style="margin-bottom: 12px;" onclick="speakDetectiveWords()">🔊 Hear Both Words</button>
-      <div class="choice-grid" style="grid-template-columns: 1fr 1fr; max-width: 320px; margin: 0 auto;">
-        <button class="choice-card" onclick="answerDetective(true)">✅ Yes, Same</button>
-        <button class="choice-card" onclick="answerDetective(false)">❌ No, Different</button>
+      <div id="detResultBox" class="result-box">
+        <h2>🕵️ Super Detective!</h2>
+        <div class="stars-banner">⭐⭐⭐⭐⭐</div>
+        <p style="font-size: 16px; color: #555;">You solved 5 sound cases!</p>
+        <button class="big-btn" onclick="startWorkout('detective')">🔄 Play Another 5 Cases</button>
       </div>
-      <div id="detStatus" class="status-msg" style="margin-top: 10px;"></div>
     </div>
 
     <!-- GAME 4: SENTENCE MATCH -->
     <div id="game-sentence" class="card" style="display: none;">
-      <div class="tracker">
-        <span id="sentencePhaseTag">Sentence Reading</span>
-        <span id="sentenceCounter">1 / 30</span>
+      <div id="sentencePlayBox">
+        <div class="tracker">
+          <span id="sentencePhaseTag">Sentence Reading</span>
+          <span id="sentenceCounter">Workout: 1 / 5</span>
+        </div>
+        <div id="sentenceText" class="sentence-card">"The frog can jump onto the wooden log."</div>
+        <button class="big-btn" style="margin-bottom: 12px;" onclick="readCurrentSentence()">🔊 Read Sentence</button>
+        <div class="choice-grid" id="sentenceChoices"></div>
+        <div id="sentenceStatus" class="status-msg"></div>
       </div>
-      <div id="sentenceText" class="sentence-card">"The frog can jump onto the wooden log."</div>
-      <button class="big-btn" style="margin-bottom: 12px;" onclick="readCurrentSentence()">🔊 Read Sentence</button>
-      <div class="choice-grid" id="sentenceChoices"></div>
-      <div id="sentenceStatus" class="status-msg"></div>
-      <button class="big-btn" style="margin-top: 10px; background:#F2F2F2; border-color:#DDD; color:#666; box-shadow:0 3px 0 #CCC;" onclick="nextSentenceQuestion()">Next ➡️</button>
+      <div id="sentenceResultBox" class="result-box">
+        <h2>📖 Star Reader!</h2>
+        <div class="stars-banner">⭐⭐⭐⭐⭐</div>
+        <p style="font-size: 16px; color: #555;">You read all 5 sentences with full understanding!</p>
+        <button class="big-btn" onclick="startWorkout('sentence')">🔄 Read 5 More Sentences</button>
+      </div>
     </div>
 
     <!-- GAME 5: MOCK SCREENING CHECK -->
@@ -267,7 +297,7 @@
       return [...arr].sort(() => Math.random() - 0.5);
     }
 
-    /* ----------------- 1. BUILDER DATA ----------------- */
+    /* ----------------- COMPREHENSIVE QUESTION LIBRARIES ----------------- */
     const RAW_BUILD_LIBRARY = {
       '3': [
         { word: "fish", letterSlots: ["f", "i", "sh"], inputTiles: ["f", "i", "sh"], emoji: "🐟" },
@@ -384,7 +414,6 @@
       ]
     };
 
-    /* ----------------- 2. PICTURE MATCH: 30 QUESTIONS ----------------- */
     const EXPANDED_PIC_MATCH = [
       { emoji: "🏑", correct: "hockey", options: ["hockey", "jockey"] },
       { emoji: "🏇", correct: "jockey", options: ["hockey", "jockey"] },
@@ -418,7 +447,6 @@
       { emoji: "🥤", correct: "straw", options: ["claw", "straw"] }
     ];
 
-    /* ----------------- 3. SOUND DETECTIVE: 30 QUESTIONS ----------------- */
     const EXPANDED_DETECTIVE = [
       { w1: "pillow", h1: "ow", e1: "🛋️", w2: "cow", h2: "ow", e2: "🐄", same: false },
       { w1: "meat", h1: "ea", e1: "🥩", w2: "bread", h2: "ea", e2: "🍞", same: false },
@@ -452,7 +480,6 @@
       { w1: "cube", h1: "u_e", e1: "🧊", w2: "tube", h2: "u_e", e2: "🧪", same: true }
     ];
 
-    /* ----------------- 4. SENTENCE MATCH: 30 QUESTIONS ----------------- */
     const EXPANDED_SENTENCE = [
       { text: "When I came back again, the seeds had grown into flowers.", correct: "🌸", options: ["🌱", "🌸"] },
       { text: "The green frog can jump onto the wooden log.", correct: "🐸", options: ["🦆", "🐸"] },
@@ -486,7 +513,6 @@
       { text: "The monkey eats a ripe yellow banana high up in the jungle.", correct: "🐒", options: ["🐒", "🦁"] }
     ];
 
-    /* ----------------- 5. MOCK SCREENING CHECK: 40 QUESTIONS ----------------- */
     const MOCK_WORDS = [
       { word: "vap", isAlien: true, emoji: "👾" },
       { word: "strop", isAlien: true, emoji: "👽" },
@@ -530,35 +556,54 @@
       { word: "whale", isAlien: false, emoji: "🐋" }
     ];
 
-    /* ----------------- STATE MANAGERS ----------------- */
+    /* ----------------- STATE & MINI-WORKOUT (5 QUESTIONS) ----------------- */
+    const WORKOUT_SIZE = 5;
     let currentPhase = '3';
     let currentGame = 'builder';
 
-    let activeBuildList = [];
-    let activePicList = [];
-    let activeDetList = [];
-    let activeSentList = [];
+    let workoutBuild = [];
+    let workoutPic = [];
+    let workoutDet = [];
+    let workoutSent = [];
 
-    let buildIndex = 0;
-    let picIndex = 0;
-    let detIndex = 0;
-    let sentenceIndex = 0;
+    let qIdxBuild = 0;
+    let qIdxPic = 0;
+    let qIdxDet = 0;
+    let qIdxSent = 0;
     let buildSlots = [];
 
-    function setupDatasets() {
-      activePicList = shuffleArray(EXPANDED_PIC_MATCH);
-      activeDetList = shuffleArray(EXPANDED_DETECTIVE);
-      activeSentList = shuffleArray(EXPANDED_SENTENCE);
-
-      if (currentPhase === 'mix') {
-        activeBuildList = shuffleArray([...RAW_BUILD_LIBRARY['3'], ...RAW_BUILD_LIBRARY['4'], ...RAW_BUILD_LIBRARY['5'], ...RAW_BUILD_LIBRARY['cew']]);
-      } else if (currentPhase !== 'mock') {
-        activeBuildList = shuffleArray(RAW_BUILD_LIBRARY[currentPhase] || []);
+    function startWorkout(gameMode) {
+      if (gameMode === 'builder') {
+        let pool = [];
+        if (currentPhase === 'mix') {
+          pool = [...RAW_BUILD_LIBRARY['3'], ...RAW_BUILD_LIBRARY['4'], ...RAW_BUILD_LIBRARY['5'], ...RAW_BUILD_LIBRARY['cew']];
+        } else {
+          pool = RAW_BUILD_LIBRARY[currentPhase] || [];
+        }
+        workoutBuild = shuffleArray(pool).slice(0, WORKOUT_SIZE);
+        qIdxBuild = 0;
+        document.getElementById('builderPlayBox').style.display = 'block';
+        document.getElementById('builderResultBox').style.display = 'none';
+        renderBuilder();
+      } else if (gameMode === 'picmatch') {
+        workoutPic = shuffleArray(EXPANDED_PIC_MATCH).slice(0, WORKOUT_SIZE);
+        qIdxPic = 0;
+        document.getElementById('picPlayBox').style.display = 'block';
+        document.getElementById('picResultBox').style.display = 'none';
+        renderPicMatch();
+      } else if (gameMode === 'detective') {
+        workoutDet = shuffleArray(EXPANDED_DETECTIVE).slice(0, WORKOUT_SIZE);
+        qIdxDet = 0;
+        document.getElementById('detPlayBox').style.display = 'block';
+        document.getElementById('detResultBox').style.display = 'none';
+        renderDetective();
+      } else if (gameMode === 'sentence') {
+        workoutSent = shuffleArray(EXPANDED_SENTENCE).slice(0, WORKOUT_SIZE);
+        qIdxSent = 0;
+        document.getElementById('sentencePlayBox').style.display = 'block';
+        document.getElementById('sentenceResultBox').style.display = 'none';
+        renderSentence();
       }
-      buildIndex = 0;
-      picIndex = 0;
-      detIndex = 0;
-      sentenceIndex = 0;
     }
 
     function selectPhase(phase) {
@@ -575,7 +620,6 @@
         renderMock();
       } else {
         subNav.style.display = 'flex';
-        setupDatasets();
         selectGame(currentGame);
       }
     }
@@ -587,7 +631,7 @@
         g.classList.toggle('active', games[i] === game);
       });
       showGameView(game);
-      renderCurrentGame();
+      startWorkout(game);
     }
 
     function showGameView(viewId) {
@@ -597,21 +641,19 @@
       });
     }
 
-    function renderCurrentGame() {
-      if (currentGame === 'builder') renderBuilder();
-      else if (currentGame === 'picmatch') renderPicMatch();
-      else if (currentGame === 'detective') renderDetective();
-      else if (currentGame === 'sentence') renderSentence();
-    }
-
     /* ----------------- 1. BUILDER ----------------- */
     function renderBuilder() {
-      if (!activeBuildList.length) return;
-      const data = activeBuildList[buildIndex];
+      if (qIdxBuild >= workoutBuild.length) {
+        document.getElementById('builderPlayBox').style.display = 'none';
+        document.getElementById('builderResultBox').style.display = 'block';
+        return;
+      }
+
+      const data = workoutBuild[qIdxBuild];
       const isCEW = (currentPhase === 'cew');
 
       document.getElementById('buildPhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix" : (isCEW ? "🔴 Tricky Word" : `Phase ${currentPhase}`);
-      document.getElementById('buildCounterTag').innerText = `${buildIndex + 1} / ${activeBuildList.length}`;
+      document.getElementById('buildCounterTag').innerText = `Workout: ${qIdxBuild + 1} / ${WORKOUT_SIZE}`;
       document.getElementById('buildImage').innerText = data.emoji;
       document.getElementById('buildStatus').innerText = "";
 
@@ -673,7 +715,7 @@
     }
 
     function pickTileItem(tileValue, elem) {
-      const data = activeBuildList[buildIndex];
+      const data = workoutBuild[qIdxBuild];
 
       if (data.splitMap && tileValue === data.splitMap.tile) {
         const [s1, s2] = data.splitMap.slots;
@@ -708,7 +750,7 @@
     function removeBuildSlot(idx) {
       const slotData = buildSlots[idx];
       if (!slotData) return;
-      const data = activeBuildList[buildIndex];
+      const data = workoutBuild[qIdxBuild];
 
       if (slotData.isSplit && data.splitMap) {
         const [s1, s2] = data.splitMap.slots;
@@ -731,7 +773,7 @@
 
     function checkBuildAnswer() {
       if (buildSlots.includes(null)) return;
-      const data = activeBuildList[buildIndex];
+      const data = workoutBuild[qIdxBuild];
 
       const currentSpelling = buildSlots.map((s, idx) => {
         if (!s) return '';
@@ -746,37 +788,32 @@
 
       if (isCorrect) {
         status.style.color = 'var(--correct)';
-        status.innerText = "Correct!";
+        status.innerText = "⭐ Well done! Correct.";
         speakFullWord(data.word);
-        setTimeout(() => nextBuildWord(), 1400);
+        setTimeout(() => {
+          qIdxBuild++;
+          renderBuilder();
+        }, 1300);
       } else {
         status.style.color = 'var(--wrong)';
         status.innerText = "Try again!";
       }
     }
 
-    function nextBuildWord() {
-      buildIndex = (buildIndex + 1) % activeBuildList.length;
-      renderBuilder();
-    }
-
-    function prevBuildWord() {
-      if (buildIndex > 0) {
-        buildIndex--;
-        renderBuilder();
-      }
-    }
-
     function sayBuildWord() {
-      speakFullWord(activeBuildList[buildIndex].word);
+      speakFullWord(workoutBuild[qIdxBuild].word);
     }
 
     /* ----------------- 2. PICTURE MATCH ----------------- */
     function renderPicMatch() {
-      if (!activePicList.length) return;
-      const item = activePicList[picIndex];
-      document.getElementById('picPhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix: Pic Match" : `Phase ${currentPhase}: Pic Match`;
-      document.getElementById('picCounter').innerText = `${picIndex + 1} / ${activePicList.length}`;
+      if (qIdxPic >= workoutPic.length) {
+        document.getElementById('picPlayBox').style.display = 'none';
+        document.getElementById('picResultBox').style.display = 'block';
+        return;
+      }
+
+      const item = workoutPic[qIdxPic];
+      document.getElementById('picCounter').innerText = `Workout: ${qIdxPic + 1} / ${WORKOUT_SIZE}`;
       document.getElementById('picClue').innerText = item.emoji;
       document.getElementById('picStatus').innerText = "";
 
@@ -790,8 +827,11 @@
           speakFullWord(opt);
           if (opt === item.correct) {
             document.getElementById('picStatus').style.color = 'var(--correct)';
-            document.getElementById('picStatus').innerText = "Super! Correct word.";
-            setTimeout(() => nextPicQuestion(), 1300);
+            document.getElementById('picStatus').innerText = "⭐ Correct word!";
+            setTimeout(() => {
+              qIdxPic++;
+              renderPicMatch();
+            }, 1100);
           } else {
             document.getElementById('picStatus').style.color = 'var(--wrong)';
             document.getElementById('picStatus').innerText = "Try again!";
@@ -801,17 +841,16 @@
       });
     }
 
-    function nextPicQuestion() {
-      picIndex = (picIndex + 1) % activePicList.length;
-      renderPicMatch();
-    }
-
     /* ----------------- 3. SOUND DETECTIVE ----------------- */
     function renderDetective() {
-      if (!activeDetList.length) return;
-      const item = activeDetList[detIndex];
-      document.getElementById('detPhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix: Detective" : `Phase ${currentPhase}: Detective`;
-      document.getElementById('detectiveCounter').innerText = `${detIndex + 1} / ${activeDetList.length}`;
+      if (qIdxDet >= workoutDet.length) {
+        document.getElementById('detPlayBox').style.display = 'none';
+        document.getElementById('detResultBox').style.display = 'block';
+        return;
+      }
+
+      const item = workoutDet[qIdxDet];
+      document.getElementById('detectiveCounter').innerText = `Workout: ${qIdxDet + 1} / ${WORKOUT_SIZE}`;
       document.getElementById('detEmoji1').innerText = item.e1;
       document.getElementById('detEmoji2').innerText = item.e2;
       document.getElementById('detStatus').innerText = "";
@@ -822,21 +861,21 @@
     }
 
     function speakDetectiveWords() {
-      const item = activeDetList[detIndex];
+      const item = workoutDet[qIdxDet];
       speakFullWord(item.w1);
       setTimeout(() => speakFullWord(item.w2), 900);
     }
 
     function answerDetective(childAnswer) {
-      const item = activeDetList[detIndex];
+      const item = workoutDet[qIdxDet];
       const status = document.getElementById('detStatus');
       if (childAnswer === item.same) {
         status.style.color = 'var(--correct)';
-        status.innerText = "Brilliant Detective! Correct.";
+        status.innerText = "⭐ Brilliant Detective! Correct.";
         setTimeout(() => {
-          detIndex = (detIndex + 1) % activeDetList.length;
+          qIdxDet++;
           renderDetective();
-        }, 1400);
+        }, 1200);
       } else {
         status.style.color = 'var(--wrong)';
         status.innerText = "Listen closely! Tap 'Hear Both Words' to check.";
@@ -845,10 +884,14 @@
 
     /* ----------------- 4. SENTENCE MATCH ----------------- */
     function renderSentence() {
-      if (!activeSentList.length) return;
-      const item = activeSentList[sentenceIndex];
-      document.getElementById('sentencePhaseTag').innerText = currentPhase === 'mix' ? "🔥 Mega Mix: Sentence" : `Phase ${currentPhase}: Sentence`;
-      document.getElementById('sentenceCounter').innerText = `${sentenceIndex + 1} / ${activeSentList.length}`;
+      if (qIdxSent >= workoutSent.length) {
+        document.getElementById('sentencePlayBox').style.display = 'none';
+        document.getElementById('sentenceResultBox').style.display = 'block';
+        return;
+      }
+
+      const item = workoutSent[qIdxSent];
+      document.getElementById('sentenceCounter').innerText = `Workout: ${qIdxSent + 1} / ${WORKOUT_SIZE}`;
       document.getElementById('sentenceText').innerText = `"${item.text}"`;
       document.getElementById('sentenceStatus').innerText = "";
 
@@ -861,8 +904,11 @@
         btn.onclick = () => {
           if (opt === item.correct) {
             document.getElementById('sentenceStatus').style.color = 'var(--correct)';
-            document.getElementById('sentenceStatus').innerText = "Super Comprehension! Correct.";
-            setTimeout(() => nextSentenceQuestion(), 1400);
+            document.getElementById('sentenceStatus').innerText = "⭐ Super Comprehension! Correct.";
+            setTimeout(() => {
+              qIdxSent++;
+              renderSentence();
+            }, 1200);
           } else {
             document.getElementById('sentenceStatus').style.color = 'var(--wrong)';
             document.getElementById('sentenceStatus').innerText = "Read carefully and try again!";
@@ -873,12 +919,7 @@
     }
 
     function readCurrentSentence() {
-      speakFullWord(activeSentList[sentenceIndex].text);
-    }
-
-    function nextSentenceQuestion() {
-      sentenceIndex = (sentenceIndex + 1) % activeSentList.length;
-      renderSentence();
+      speakFullWord(workoutSent[qIdxSent].text);
     }
 
     /* ----------------- 5. MOCK SCREENING CHECK ----------------- */
@@ -922,8 +963,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      setupDatasets();
-      renderBuilder();
+      startWorkout('builder');
     });
   </script>
 </body>
